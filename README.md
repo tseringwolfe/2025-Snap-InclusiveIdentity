@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/tseringwolfe/2025-Snap-InclusiveIdentity">
-    <img src="https://avatars.githubusercontent.com/u/85767261?s=200&v=4" alt="Logo" width="180" height="180">
+    <img src="https://images.ctfassets.net/jwenq9l5fmib/qm4NnYcudNN9w20cVG1kX/11bc5518ae0830beb9ab4f3a03363d60/SnapPride_Transparent_2000px.png?fm=avif&q=40&h=400" alt="Logo" width="180" height="180">
   </a>
 
 <h3 align="center">Snapchat Inclusive Identity Feature</h3>
