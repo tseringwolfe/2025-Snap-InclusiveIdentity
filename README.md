@@ -43,6 +43,8 @@
 ## About The Project
 
 what it was built with
+prototype documents located here 
+https://www.figma.com/board/XXPGhIz2iyU0lOEC51dEwI/Snap-Academies-Showcase-%F0%9F%91%BB?node-id=2982-10896&t=wB2j84Esz7h9uEx3-1
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
