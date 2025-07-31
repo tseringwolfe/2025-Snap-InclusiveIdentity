@@ -1,3 +1,7 @@
+#link to FigJam docs 
+https://www.figma.com/board/XXPGhIz2iyU0lOEC51dEwI/Snap-Academies-Showcase-%F0%9F%91%BB?node-id=2982-10896&t=wB2j84Esz7h9uEx3-1
+
+
 # Final Project Starter
 
 This will be the starter code for your final project! But first, we're going to spend a day making improvements to it. We'll use pull requests to manage this, and for that you'll need to be on your own branch. You can work in pairs or on your own.
