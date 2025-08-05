@@ -11,6 +11,12 @@ import FriendStory from "../screens/FriendStory";
 import AstrologyScreen from "../screens/AstrologyScreen";
 import MemoryScreen from "../screens/MemoryScreen";
 import EventScreen from "../screens/EventScreen"; //New component by Sona and Christian
+import FindSchoolScreen from "../screens/FindSchoolScreen";
+import EnterEmailScreen from "../screens/EnterEmailScreen";
+import NameAndGradScreen from "../screens/NameAndGradScreen";
+import IdentityScreen from "../screens/IdentityScreen";
+import InterestsScreen from "../screens/InterestsScreen";
+import SchoolScreen from "../screens/SchoolScreen";
 
 const Stack = createStackNavigator();
 
@@ -69,6 +75,30 @@ export default function App() {
           component={EventScreen}
           options={{ headerShown: true }}
         />
+        <Stack.Screen
+          name="FindYourSchool"
+          component={FindSchoolScreen}
+          options={{ headerShown: true }} />
+        <Stack.Screen
+          name="EnterYourEmail"
+          component={EnterEmailScreen}
+          options={{ headerShown: true }} />
+        <Stack.Screen
+          name="NameAndGrad"
+          component={NameAndGradScreen}
+          options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Identity"
+          component={IdentityScreen}
+          options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Interests"
+          component={InterestsScreen}
+          options={{ headerShown: false }} />
+        <Stack.Screen
+          name="School"
+          component={SchoolScreen}
+          options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

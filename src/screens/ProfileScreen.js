@@ -24,15 +24,40 @@ export default function ProfileScreen() {
   const [astrology, setAstrology] = useState("Pisces");
   const userSign = findAstrologySign();
 
+  //ADDED state var for profile picture
+  const [profilePicUrl, setProfilePicUrl] = useState(
+    "https://media.discordapp.net/attachments/979916344868872245/1401990490106101852/image.png?ex=689248e4&is=6890f764&hm=4002507880973412d011687c0057f983857e9cd1e565ab928cca7c687e2056ae&=&format=webp&quality=lossless&width=1408&height=1408",
+  );
+
   useEffect(() => {
+    //updated useEffect from Header
+    async function fetchProfilePic() {
+      if (user === null) {
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", user.id)
+        .single();
+
+      if (error) {
+        console.log("Profile pic fetch failure");
+      } else if (data.avatar_url) {
+        setProfilePicUrl(data.avatar_url);
+      }
+    }
+
+    fetchProfilePic();
+
     setAstrology(userSign.sign);
-  }),
-    [];
+  }, [user]);
 
   return (
     <View style={{ alignItems: "center" }}>
       <Image
-        source={{ uri: "https://i.imgur.com/FxsJ3xy.jpg" }}
+        source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
       <Text
@@ -56,6 +81,14 @@ export default function ProfileScreen() {
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
+      <Pressable>
+        <Button
+          onPress={() => {
+            navigation.navigate("FindYourSchool", {});
+          }}
+          title="Join School+"
+        />
+      </Pressable>
       <Button onPress={handleSignOut} title="Log Out" />
       <Pressable>
         <Button

@@ -38,7 +38,7 @@ export default function SettingsScreen() {
       setDateOfBirth(data.birthday || "01/01/1998");
       setProfilePictureUrl(
         data.avatar_url ||
-          "https://image.cnbcfm.com/api/v1/image/100703713-Rubber%20duck%20in%20hk.jpg?v=1532564692&w=1600&h=900",
+        "https://image.cnbcfm.com/api/v1/image/100703713-Rubber%20duck%20in%20hk.jpg?v=1532564692&w=1600&h=900",
       ); // Default URL
       setInitialDisplayName(data.username || user.email.split("@")[0]);
       setInitialEmail(data.email || user.email);
