@@ -8,13 +8,14 @@ import {
     Button,
     StyleSheet,
     Pressable,
-    TextInput
+    TextInput,
 } from "react-native";
 
 import { supabase } from "../utils/hooks/supabase";
 
 export default function EnterEmailScreen({ }) {
     const navigation = useNavigation();
+  
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
 
@@ -27,6 +28,7 @@ export default function EnterEmailScreen({ }) {
         setError('');
         navigation.navigate("Identity", {});
     };
+
 
     return (
         <>
@@ -43,6 +45,7 @@ export default function EnterEmailScreen({ }) {
                 <Pressable>
                     <Button
                         onPress={handleNext}
+
                         title="Next"
                     />
                 </Pressable>

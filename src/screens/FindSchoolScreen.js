@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+
 import { Card } from "@rn-vui/base";
 import {
     View,
@@ -98,7 +99,6 @@ export default function FindSchoolScreen({ }) {
 
                 <Pressable>
                     <Button
-
                         onPress={() => {
                             navigation.navigate("EnterYourEmail", {});
                         }}
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         paddingTop: 100,
         alignItems: 'center',
     },
+
     schoolLogo: {
         width: 100,
         height: 100,
