@@ -32,18 +32,38 @@ export default function IdentityScreen() {
     const [preferredName, setPreferredName] = useState('');
     const [gradYear, setGradYear] = useState('');
 
+    async function addUserDataToTable(tableName, data) {
+        const { error } = await supabase
+            .from(tableName)
+            .insert(data);
+        console.log("inserting data");
+        if (error) {
+            console.error('Error inserting data:', error.message);
+        } else {
+            console.log('Data inserted successfully!');
+        }
+    }
 
+    const handlePress = () => {
+        console.log("in handle press");
+        addUserDataToTable('students', {
+            name: preferredName,
+            pronouns: pronouns[pronounIndex],
+            ethnicity: ethnicities[ethnicityIndex],
+            graduation_year: gradYear,
+            gender_expression: genders[genderIndex],
+            sexual_orientation: sexualities[sexualityIndex],
+        });
 
-
+        navigation.navigate("Interests", {});
+    };
 
 
     return (
         <>
             <View style={styles.container}>
                 <Button
-                    onPress={() => {
-                        navigation.navigate("Interests", {});
-                    }}
+                    onPress={handlePress}
                     title="Skip"
                 />
 
@@ -108,9 +128,7 @@ export default function IdentityScreen() {
 
                 <Pressable>
                     <Button
-                        onPress={() => {
-                            navigation.navigate("Interests", {});
-                        }}
+                        onPress={handlePress}
                         title="Continue"
                     />
                 </Pressable>
