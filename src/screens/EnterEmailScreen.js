@@ -22,7 +22,7 @@ export default function EnterEmailScreen({ }) {
                 <Pressable>
                     <Button
                         onPress={() => {
-                            navigation.navigate("NameAndGrad", {});
+                            navigation.navigate("Identity", {});
                         }}
                         title="Next"
                     />

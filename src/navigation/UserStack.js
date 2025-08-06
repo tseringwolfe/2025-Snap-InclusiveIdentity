@@ -13,7 +13,6 @@ import MemoryScreen from "../screens/MemoryScreen";
 import EventScreen from "../screens/EventScreen"; //New component by Sona and Christian
 import FindSchoolScreen from "../screens/FindSchoolScreen";
 import EnterEmailScreen from "../screens/EnterEmailScreen";
-import NameAndGradScreen from "../screens/NameAndGradScreen";
 import IdentityScreen from "../screens/IdentityScreen";
 import InterestsScreen from "../screens/InterestsScreen";
 import SchoolScreen from "../screens/SchoolScreen";
@@ -83,10 +82,6 @@ export default function App() {
           name="EnterYourEmail"
           component={EnterEmailScreen}
           options={{ headerShown: true }} />
-        <Stack.Screen
-          name="NameAndGrad"
-          component={NameAndGradScreen}
-          options={{ headerShown: false }} />
         <Stack.Screen
           name="Identity"
           component={IdentityScreen}
