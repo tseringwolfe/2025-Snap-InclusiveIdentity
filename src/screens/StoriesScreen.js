@@ -64,9 +64,9 @@ export default function StoriesScreen({ route, navigation }) {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
 
-            //contentContainerStyle={styles.stories} commented this out because it prevented story scrolling felt unintuitive
+          //contentContainerStyle={styles.stories} commented this out because it prevented story scrolling felt unintuitive
           >
-            <StoriesBitmoji onPress={console.log("bit moooooo")} />
+            <StoriesBitmoji />
             <StoriesBitmoji />
             <StoriesBitmoji />
             <StoriesBitmoji />

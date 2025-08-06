@@ -45,7 +45,6 @@ export default function EnterEmailScreen({ }) {
                 <Pressable>
                     <Button
                         onPress={handleNext}
-
                         title="Next"
                     />
                 </Pressable>

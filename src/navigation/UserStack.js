@@ -85,7 +85,7 @@ export default function App() {
         <Stack.Screen
           name="Identity"
           component={IdentityScreen}
-          options={{ headerShown: false }} />
+          options={{ headerShown: true }} />
         <Stack.Screen
           name="Interests"
           component={InterestsScreen}
