@@ -8,14 +8,6 @@ import {
     Button,
     StyleSheet,
     Pressable,
-<<<<<<< HEAD
-} from "react-native";
-
-import { supabase } from "../utils/hooks/supabase";
-
-export default function IdentityScreen({ }) {
-    const navigation = useNavigation();
-=======
     TextInput,
 } from "react-native";
 
@@ -44,14 +36,10 @@ export default function IdentityScreen() {
 
 
 
->>>>>>> a68ecc4 (added button groups and state vars to identity screen)
 
     return (
         <>
             <View style={styles.container}>
-<<<<<<< HEAD
-                <Text>Pronouns, Ethnicity, Sexual Orientation, Gender Expression</Text>
-=======
                 <Button
                     onPress={() => {
                         navigation.navigate("Interests", {});
@@ -118,7 +106,6 @@ export default function IdentityScreen() {
                     containerStyle={{ marginBottom: 20 }}
                 />
 
->>>>>>> a68ecc4 (added button groups and state vars to identity screen)
                 <Pressable>
                     <Button
                         onPress={() => {
@@ -136,11 +123,6 @@ export default function IdentityScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-<<<<<<< HEAD
-        paddingTop: 100,
-        alignItems: 'center',
-    },
-=======
         paddingTop: 50,
         alignItems: 'center',
     },
@@ -150,5 +132,4 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
     },
->>>>>>> a68ecc4 (added button groups and state vars to identity screen)
 })
