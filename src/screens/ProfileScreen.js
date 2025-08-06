@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { findAstrologySign } from "../utils/hooks/findAstrologySign";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
 
+
 const handleSignOut = async () => {
   try {
     const { error } = await supabase.auth.signOut();
@@ -26,7 +27,11 @@ export default function ProfileScreen() {
 
   //ADDED state var for profile picture
   const [profilePicUrl, setProfilePicUrl] = useState(
+<<<<<<< HEAD
     "https://media.discordapp.net/attachments/979916344868872245/1401990490106101852/image.png?ex=689248e4&is=6890f764&hm=4002507880973412d011687c0057f983857e9cd1e565ab928cca7c687e2056ae&=&format=webp&quality=lossless&width=1408&height=1408",
+=======
+    "file:///Users/twolfe/Desktop/danny%20bitmojis/dannyCoffee.png",
+>>>>>>> a68ecc4 (added button groups and state vars to identity screen)
   );
 
   useEffect(() => {
@@ -89,7 +94,10 @@ export default function ProfileScreen() {
           title="Join School+"
         />
       </Pressable>
+<<<<<<< HEAD
       <Button onPress={handleSignOut} title="Log Out" />
+=======
+>>>>>>> a68ecc4 (added button groups and state vars to identity screen)
       <Pressable>
         <Button
           onPress={() => {
@@ -98,6 +106,7 @@ export default function ProfileScreen() {
           title="Settings"
         />
       </Pressable>
+      <Button onPress={handleSignOut} title="Log Out" />
     </View>
   );
 }

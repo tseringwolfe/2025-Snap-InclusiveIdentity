@@ -13,7 +13,10 @@ import MemoryScreen from "../screens/MemoryScreen";
 import EventScreen from "../screens/EventScreen"; //New component by Sona and Christian
 import FindSchoolScreen from "../screens/FindSchoolScreen";
 import EnterEmailScreen from "../screens/EnterEmailScreen";
+<<<<<<< HEAD
 import NameAndGradScreen from "../screens/NameAndGradScreen";
+=======
+>>>>>>> a68ecc4 (added button groups and state vars to identity screen)
 import IdentityScreen from "../screens/IdentityScreen";
 import InterestsScreen from "../screens/InterestsScreen";
 import SchoolScreen from "../screens/SchoolScreen";
@@ -75,6 +78,10 @@ export default function App() {
           component={EventScreen}
           options={{ headerShown: true }}
         />
+<<<<<<< HEAD
+=======
+
+>>>>>>> a68ecc4 (added button groups and state vars to identity screen)
         <Stack.Screen
           name="FindYourSchool"
           component={FindSchoolScreen}
@@ -84,6 +91,7 @@ export default function App() {
           component={EnterEmailScreen}
           options={{ headerShown: true }} />
         <Stack.Screen
+<<<<<<< HEAD
           name="NameAndGrad"
           component={NameAndGradScreen}
           options={{ headerShown: false }} />
@@ -91,6 +99,11 @@ export default function App() {
           name="Identity"
           component={IdentityScreen}
           options={{ headerShown: false }} />
+=======
+          name="Identity"
+          component={IdentityScreen}
+          options={{ headerShown: true }} />
+>>>>>>> a68ecc4 (added button groups and state vars to identity screen)
         <Stack.Screen
           name="Interests"
           component={InterestsScreen}

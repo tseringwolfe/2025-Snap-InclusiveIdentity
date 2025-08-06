@@ -22,7 +22,11 @@ export default function EnterEmailScreen({ }) {
                 <Pressable>
                     <Button
                         onPress={() => {
+<<<<<<< HEAD
                             navigation.navigate("NameAndGrad", {});
+=======
+                            navigation.navigate("Identity", {});
+>>>>>>> a68ecc4 (added button groups and state vars to identity screen)
                         }}
                         title="Next"
                     />
