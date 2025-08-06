@@ -99,6 +99,7 @@ export default function ProfileScreen() {
           title="Settings"
         />
       </Pressable>
+      <Button onPress={handleSignOut} title="Log Out" />
     </View>
   );
 }
