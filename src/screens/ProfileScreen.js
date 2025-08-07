@@ -28,6 +28,7 @@ export default function ProfileScreen() {
   //ADDED state var for profile picture
   const [profilePicUrl, setProfilePicUrl] = useState(
     "https://postimg.cc/9rDHcRX9",
+    "https://postimg.cc/9rDHcRX9",
   );
 
   useEffect(() => {
@@ -90,8 +91,6 @@ export default function ProfileScreen() {
           title="Join School+"
         />
       </Pressable>
-
-      <Button onPress={handleSignOut} title="Log Out" />
 
       <Pressable>
         <Button
