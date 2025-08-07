@@ -26,7 +26,8 @@ export default function ProfileScreen() {
   const userSign = findAstrologySign();
 
   //ADDED state var for profile picture
-  const [profilePicUrl, setProfilePicUrl] = useState("file:///Users/twolfe/Desktop/danny%20bitmojis/dannyCoffee.png"
+  const [profilePicUrl, setProfilePicUrl] = useState(
+    "https://postimg.cc/9rDHcRX9",
   );
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export default function ProfileScreen() {
           title="Join School+"
         />
       </Pressable>
-      <Button onPress={handleSignOut} title="Log Out" />
+
       <Pressable>
         <Button
           onPress={() => {
