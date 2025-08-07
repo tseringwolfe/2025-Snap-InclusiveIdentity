@@ -88,6 +88,7 @@ export default function ProfileScreen() {
           title="Join School+"
         />
       </Pressable>
+
       <Button onPress={handleSignOut} title="Log Out" />
 
       <Pressable>
