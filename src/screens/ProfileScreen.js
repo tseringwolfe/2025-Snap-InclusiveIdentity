@@ -78,8 +78,6 @@ export default function ProfileScreen() {
         />
       </Pressable>
 
-      <Button onPress={handleSignOut} title="Log Out" />
-
       <Pressable>
         <Button
           onPress={() => {
