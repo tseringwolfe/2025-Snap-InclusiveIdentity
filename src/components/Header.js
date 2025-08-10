@@ -19,9 +19,7 @@ const Stack = createStackNavigator();
 export default function Header({ title }) {
   const navigation = useNavigation();
 
-  const [profilePicUrl, setProfilePicUrl] = useState(
-    "https://postimg.cc/9rDHcRX9",
-  );
+  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
 
   const { user } = useAuthentication();
 
