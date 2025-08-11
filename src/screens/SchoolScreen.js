@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
 import {
     View,
     Text,
@@ -12,6 +11,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { Card } from "@rn-vui/base";
+import { useNavigation } from "@react-navigation/native";
 
 import { supabase } from "../utils/hooks/supabase";
 

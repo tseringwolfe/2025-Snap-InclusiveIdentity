@@ -24,9 +24,15 @@ export default function ProfileScreen() {
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
   const [inSchool, setInSchool] = useState(false);
 
+  //ADDED state var for profile picture
+  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+
   useEffect(() => {
+    //updated useEffect from Header
     async function fetchProfilePic() {
-      if (!user) return;
+      if (user === null) {
+        return;
+      }
 
       const { data, error } = await supabase
         .from("students")
@@ -54,7 +60,7 @@ export default function ProfileScreen() {
     } else {
       navigation.navigate("FindYourSchool", {});
     }
-  };
+  }
 
   return (
     <View style={{ alignItems: "center" }}>
@@ -62,12 +68,17 @@ export default function ProfileScreen() {
         source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
-      <Text style={{ justifyContents: "center", textAlign: "center" }}>
+      <Text
+        style={{
+          justifyContents: "center",
+          textAlign: "center",
+        }}
+      >
         {user &&
           user.user_metadata &&
           user.user_metadata.email.slice(
             0,
-            user.user_metadata.email.indexOf("@"),
+            user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
           )}
       </Text>
       
@@ -88,7 +99,6 @@ export default function ProfileScreen() {
       </Pressable>
 
       <Button onPress={handleSignOut} title="Log Out" />
-
     </View>
   );
 }
