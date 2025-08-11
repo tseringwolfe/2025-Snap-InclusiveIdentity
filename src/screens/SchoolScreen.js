@@ -33,6 +33,8 @@ export default function SchoolScreen({ }) {
         fetchData();
     }, []);
 
+    console.log(students);
+
     const studentNames = students.map(student => student.name);
 
     return (

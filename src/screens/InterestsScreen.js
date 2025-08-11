@@ -14,42 +14,60 @@ import {
 } from "react-native";
 
 import { supabase } from "../utils/hooks/supabase";
+import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you have a user context
 
 const interests = [
   { label: 'Academics', 
-    item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science" ]},
+    item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science", "Computer Science" ]},
   { label: 'Food', 
     item: ['Boba', 'Matcha', 'Kbbq'] },
   { label: 'Music', 
-    item: ['Rina Sawayama', 'Allie X', 'Chappel Roan', 'KATSEYE', ] },
+    item: ['Rina Sawayama', 'Allie X', 'Chappell Roan', 'KATSEYE', 'Troye Sivan '] },
   { label: 'Art & Design', 
     item: ["Painting", "Sculpture", "Graphic Design", "Photography", "Fashion Design", "Interior Design", "Ceramics"] },
   { label: 'Gaming', 
-    item: ['Valorant', 'League of Legends', 'Overwatch', 'CSGO', 'Fortnite', 'Minecraft', 'Sonic Adventure 2'] },
+    item: ['Valorant', 'League of Legends', 'Overwatch', 'CSGO', 'Fortnite', 'Minecraft', 'Sonic Adventure 2', 'Roblox'] },
 ];
 
 export default function InterestsScreen({ }) {
   const navigation = useNavigation();
+  const { user } = useAuthentication(); // Get current user
   const [expanded, setExpanded] = useState({});
   const [selected, setSelected] = useState([]);
 
-    const toggleCategory = (category) => {
-        setExpanded((prev) => ({
-        ...prev,
-        [category]: !prev[category],
-        }));
-    };
+  const toggleCategory = (category) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
 
-    const toggleInterest = (interest) => {
-        setSelected((prev) =>
-        prev.includes(interest)
-            ? prev.filter((i) => i !== interest)
-            : [...prev, interest]
-        );
-    };
+  const toggleInterest = (interest) => {
+    setSelected((prev) =>
+      prev.includes(interest)
+        ? prev.filter((i) => i !== interest)
+        : [...prev, interest]
+    );
+  };
+
+  const handleContinue = async () => {
+    if (!user) return;
+    // Save selected interests to Supabase
+    const { error } = await supabase
+      .from("students")
+      .update({ interests: selected })
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.log("Error saving interests:", error.message);
+      // Optionally show an error message
+      return;
+    }
+    navigation.navigate("School", {});
+  };
 
   return (
-  <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {interests.map(({ label, item }) => (
         <View key={label} style={styles.categoryContainer}>
           <TouchableOpacity onPress={() => toggleCategory(label)}>
@@ -83,7 +101,7 @@ export default function InterestsScreen({ }) {
       ))}
       <Pressable style={{ marginTop: 30 }}>
         <Button
-          onPress={() => navigation.navigate("School", {})}
+          onPress={handleContinue}
           title="Continue"
         />
       </Pressable>
