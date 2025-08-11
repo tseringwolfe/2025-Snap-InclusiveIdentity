@@ -34,15 +34,18 @@ export default function ProfileScreen() {
       }
 
       const { data, error } = await supabase
-        .from("profiles")
-        .select("avatar_url")
-        .eq("id", user.id)
+        .from("students")
+        .select("avatar_url, school")
+        .eq("user_id", user.id)
         .single();
 
       if (error) {
-        console.log("Profile pic fetch failure");
-      } else if (data.avatar_url) {
-        setProfilePicUrl(data.avatar_url);
+        console.log("Profile fetch failure");
+        console.log("School status: " + inSchool + "school name: " + data.school)
+      } else if (data) {
+        if (data.avatar_url) setProfilePicUrl(data.avatar_url);
+        console.log("School field value:", data.school); // Debug line
+        setInSchool(!!data.school); // true if school is set
       }
     }
 
