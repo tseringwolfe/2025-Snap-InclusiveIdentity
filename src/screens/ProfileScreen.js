@@ -2,7 +2,6 @@ import { Image, Text, View, Button, StyleSheet, Pressable } from "react-native";
 import { supabase } from "../utils/hooks/supabase";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { findAstrologySign } from "../utils/hooks/findAstrologySign";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 
@@ -22,8 +21,6 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  const [astrology, setAstrology] = useState("Pisces");
-  const userSign = findAstrologySign();
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
   const [inSchool, setInSchool] = useState(false);
 
@@ -32,40 +29,30 @@ export default function ProfileScreen() {
       if (!user) return;
 
       const { data, error } = await supabase
-        .from("profiles")
+        .from("students")
         .select("avatar_url, school")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (error) {
-        console.log("Profile pic fetch failure");
+        console.log("Profile fetch failure");
+        console.log("School status: " + inSchool + "school name: " + data.school)
       } else if (data) {
         if (data.avatar_url) setProfilePicUrl(data.avatar_url);
-        console.log("School field value:", data.school); // Debug line
-        setInSchool(!!data.school); // true if school is set
+        if (data.school && data.school !== "") {
+          setInSchool(true);
+        }
       }
     }
 
     fetchProfilePic();
-    setAstrology(userSign.sign);
   }, [user]);
 
   const handleSchoolButton = async () => {
-    if (inSchool) {
+    if (inSchool === true) {
       navigation.navigate("School");
     } else {
-      if (!user) return;
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("id", user.id)
-        .single();
-
-      if (data && data.id) {
-        navigation.navigate("School");
-      } else {
-        navigation.navigate("FindYourSchool", {});
-      }
+      navigation.navigate("FindYourSchool", {});
     }
   };
 
@@ -84,22 +71,12 @@ export default function ProfileScreen() {
           )}
       </Text>
       
-      <Button
-        onPress={() => {
-          navigation.navigate("Astrology");
-        }}
-        title={astrology}
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
       <Pressable>
         <Button
           onPress={handleSchoolButton}
-          title={inSchool ? "School Page" : "Join School+"}
+          title={"Join School+"}
         />
       </Pressable>
-
-      <Button onPress={handleSignOut} title="Log Out" />
 
       <Pressable>
         <Button
@@ -109,6 +86,7 @@ export default function ProfileScreen() {
           title="Settings"
         />
       </Pressable>
+      <Button onPress={handleSignOut} title="Log Out" />
     </View>
   );
 }

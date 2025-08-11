@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import { Card } from "@rn-vui/base";
 import {
     View,
@@ -13,8 +11,8 @@ import {
     TextInput,
     ScrollView
 } from "react-native";
-
 import { supabase } from "../utils/hooks/supabase";
+import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you have a user context
 
 // This is a mock list of schools. In a real application, data would be fetched from a database or API.
 let SchoolList =[
@@ -59,56 +57,69 @@ let SchoolList =[
 
 export default function FindSchoolScreen({ }) {
     const navigation = useNavigation();
+    const { user } = useAuthentication();
+    const [selectedSchool, setSelectedSchool] = useState("");
+
+    const handleSchoolSelect = async (school) => {
+        setSelectedSchool(school);
+        console.log("Selected school:", school);
+        if (!user) return;
+        // Update the user's school in Supabase
+        const { error } = await supabase
+            .from("students") 
+            .update({ school: school.schoolname })
+            .eq("user_id", user.id); 
+
+        if (error) {
+            console.log("Error saving school:", error.message);
+            // Optionally show an error message
+            return;
+        }
+        navigation.navigate("EnterYourEmail", {});
+    };
 
     return (
-        <>
-            <View style={styles.container}>
-                <TextInput 
-                    style={{id:"outlined" }}
-                    placeholder="Search for your school" 
-                    marginBottom={20}
-                />
-                <Text
-                    style={{
-                        fontSize: 15,
-                    
-                    }}>
-                        Plase select the college you attend
-                </Text>
-                <ScrollView>
-                    <View style = {styles.container}>
-                        {SchoolList.map((school) => (
-                        <Pressable onPress={() => {
-                            navigation.navigate("EnterYourEmail", {});
-                        }}>
-                        <Card key={school.schoolID}>
-                            <Card.Title>{school.schoolname}</Card.Title>
-                            <Card.Divider />
-                            <Image
-                                source={{ uri: school.schoolLogo }}
-                                style={styles.schoolLogo}
-                            />
-
-                            <Text>{school.schoolAddress}</Text>
-                        </Card>
+        <View style={styles.container}>
+            <TextInput 
+                style={{ marginBottom: 20, borderWidth: 1, borderColor: "#ccc", width: 250, paddingHorizontal: 10, borderRadius: 8 }}
+                placeholder="Search for your school"
+            />
+            <Text style={{ fontSize: 15, marginBottom: 10 }}>
+                Please select the college you attend
+            </Text>
+            <ScrollView>
+                <View style={styles.container}>
+                    {SchoolList.map((school) => (
+                        <Pressable key={school.schoolID} onPress={() => handleSchoolSelect(school)}>
+                            <Card>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    <Image
+                                        source={{ uri: school.schoolLogo }}
+                                        style={styles.schoolLogo}
+                                    />
+                                    <View style={{ marginLeft: 10 }}>
+                                        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{school.schoolname}</Text>
+                                        <Text>{school.schoolAddress}</Text>
+                                    </View>
+                                </View>
+                            </Card>
                         </Pressable>
-                        
                     ))}
-                    </View>
-                </ScrollView>
-
-                <Pressable>
-                    <Button
-                        onPress={() => {
-                            navigation.navigate("EnterYourEmail", {});
-                        }}
-                        title="Next"
-                    />
-                </Pressable>
-            </View>
-        </>
+                </View>
+            </ScrollView>
+            <Pressable>
+                <Button
+                    onPress={() => {
+                        if (selectedSchool) {
+                            handleSchoolSelect(selectedSchool);
+                        }
+                    }}
+                    title="Next"
+                    disabled={!selectedSchool}
+                />
+            </Pressable>
+        </View>
     );
-
 }
 
 const styles = StyleSheet.create({
@@ -117,7 +128,6 @@ const styles = StyleSheet.create({
         paddingTop: 100,
         alignItems: 'center',
     },
-
     schoolLogo: {
         width: 100,
         height: 100,
@@ -127,6 +137,5 @@ const styles = StyleSheet.create({
     mapIcon: {
         width: 24,
         height: 24,
-
     }
-})
+});
