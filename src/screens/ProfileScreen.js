@@ -25,11 +25,8 @@ export default function ProfileScreen() {
   const [inSchool, setInSchool] = useState(false);
 
   useEffect(() => {
-    //updated useEffect from Header
     async function fetchProfilePic() {
-      if (user === null) {
-        return;
-      }
+      if (!user) return;
 
       const { data, error } = await supabase
         .from("students")
@@ -65,17 +62,12 @@ export default function ProfileScreen() {
         source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
-      <Text
-        style={{
-          justifyContents: "center",
-          textAlign: "center",
-        }}
-      >
+      <Text style={{ justifyContents: "center", textAlign: "center" }}>
         {user &&
           user.user_metadata &&
           user.user_metadata.email.slice(
             0,
-            user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
+            user.user_metadata.email.indexOf("@"),
           )}
       </Text>
       
