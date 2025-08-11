@@ -84,14 +84,6 @@ export default function ProfileScreen() {
           )}
       </Text>
 
-      <Button
-        onPress={() => {
-          navigation.navigate("Astrology");
-        }}
-        title={astrology}
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
       <Pressable>
         <Button
           onPress={handleSchoolButton}
@@ -107,6 +99,9 @@ export default function ProfileScreen() {
           title="Settings"
         />
       </Pressable>
+
+      <Button onPress={handleSignOut} title="Log Out" />
+
     </View>
   );
 }
