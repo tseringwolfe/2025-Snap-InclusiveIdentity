@@ -38,7 +38,7 @@ export default function SettingsScreen() {
       setDateOfBirth(data.birthday || "01/01/1998");
       setProfilePictureUrl(
         data.avatar_url ||
-        "file:///Users/twolfe/Desktop/danny%20bitmojis/dannyCoffee.png",
+        "https://postimg.cc/9rDHcRX9",
       ); // Default URL
       setInitialDisplayName(data.username || user.email.split("@")[0]);
       setInitialEmail(data.email || user.email);
