@@ -54,9 +54,9 @@ export default function InterestsScreen({ }) {
     if (!user) return;
     // Save selected interests to Supabase
     const { error } = await supabase
-      .from("profiles")
+      .from("students")
       .update({ interests: selected })
-      .eq("id", user.id);
+      .eq("user_id", user.id);
 
     if (error) {
       console.log("Error saving interests:", error.message);
