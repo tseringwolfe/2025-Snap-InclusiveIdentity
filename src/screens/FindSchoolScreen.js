@@ -15,43 +15,43 @@ import { supabase } from "../utils/hooks/supabase";
 import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you have a user context
 
 // This is a mock list of schools. In a real application, data would be fetched from a database or API.
-let SchoolList =[
-{ 
-    schoolname: "Snap Academies",
-    alternativeName: "Snap U",
-    schoolID: "1",
-    schoolAddress: "2850 Ocean Park Blvd, Santa Monica, CA 90405",
-    schoolLogo: "https://media.npr.org/assets/img/2016/03/16/snapchat-school_custom-87ba860693901f4f6f8f3d3ebd7b3cd91308e1c1.jpg?s=1100&c=50&f=jpeg",
-},
-{
-    schoolname: "Santa Monica College",
-    alternativeName: "SMC",
-    schoolID: "2",
-    schoolAddress: "1900 Pico Blvd, Santa Monica, CA 90405",
-    schoolLogo: "https://admin.smc.edu/administration/marketing/images/SMClogoRxblue10.png",
+let SchoolList = [
+    {
+        schoolname: "Snap Academies",
+        alternativeName: "Snap U",
+        schoolID: "1",
+        schoolAddress: "2850 Ocean Park Blvd, Santa Monica, CA 90405",
+        schoolLogo: "https://media.npr.org/assets/img/2016/03/16/snapchat-school_custom-87ba860693901f4f6f8f3d3ebd7b3cd91308e1c1.jpg?s=1100&c=50&f=jpeg",
+    },
+    {
+        schoolname: "Santa Monica College",
+        alternativeName: "SMC",
+        schoolID: "2",
+        schoolAddress: "1900 Pico Blvd, Santa Monica, CA 90405",
+        schoolLogo: "https://admin.smc.edu/administration/marketing/images/SMClogoRxblue10.png",
 
-},
-{
-    schoolname: "El Camino College",
-    alternativeName: "ECC",
-    schoolID: "3",
-    schoolAddress: "16007 Crenshaw Blvd, Torrance, CA 90506",
-    schoolLogo: "https://static.wixstatic.com/media/b8c0dc_cc91c6c304df44d88961a008f909f456~mv2.png/v1/fill/w_560,h_318,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.png",
-},
-{
-    schoolname: "Citrus College",
-    alternativeName: "CC",
-    schoolID: "4",
-    schoolAddress: "1000 W Foothill Blvd, Glendora, CA 91741",
-    schoolLogo: "https://californiarevealed.org/sites/default/files/styles/partner_logo/public/cazc.png?itok=g4nBDvo_",
-},
-{
-    schoolname: "Pasadena City College",
-    alternativeName: "PCC",
-    schoolID: "5",
-    schoolAddress: "1570 E Colorado Blvd, Pasadena, CA 91106",
-    schoolLogo: "https://pasadena.edu/strategic-communications-and-marketing/guides-and-reference/brand/visual-style-guide/images/pcclogo.png",
-}
+    },
+    {
+        schoolname: "El Camino College",
+        alternativeName: "ECC",
+        schoolID: "3",
+        schoolAddress: "16007 Crenshaw Blvd, Torrance, CA 90506",
+        schoolLogo: "https://static.wixstatic.com/media/b8c0dc_cc91c6c304df44d88961a008f909f456~mv2.png/v1/fill/w_560,h_318,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.png",
+    },
+    {
+        schoolname: "Citrus College",
+        alternativeName: "CC",
+        schoolID: "4",
+        schoolAddress: "1000 W Foothill Blvd, Glendora, CA 91741",
+        schoolLogo: "https://californiarevealed.org/sites/default/files/styles/partner_logo/public/cazc.png?itok=g4nBDvo_",
+    },
+    {
+        schoolname: "Pasadena City College",
+        alternativeName: "PCC",
+        schoolID: "5",
+        schoolAddress: "1570 E Colorado Blvd, Pasadena, CA 91106",
+        schoolLogo: "https://pasadena.edu/strategic-communications-and-marketing/guides-and-reference/brand/visual-style-guide/images/pcclogo.png",
+    }
 
 ];
 
