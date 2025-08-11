@@ -22,28 +22,29 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
+
   const [inSchool, setInSchool] = useState(false);
 
   //ADDED state var for profile picture
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
 
+
   useEffect(() => {
-    //updated useEffect from Header
     async function fetchProfilePic() {
-      if (user === null) {
-        return;
-      }
+      if (!user) return;
 
       const { data, error } = await supabase
         .from("profiles")
-        .select("avatar_url")
+        .select("avatar_url, school")
         .eq("id", user.id)
         .single();
 
       if (error) {
         console.log("Profile pic fetch failure");
-      } else if (data.avatar_url) {
-        setProfilePicUrl(data.avatar_url);
+      } else if (data) {
+        if (data.avatar_url) setProfilePicUrl(data.avatar_url);
+        console.log("School field value:", data.school); // Debug line
+        setInSchool(!!data.school); // true if school is set
       }
     }
 
@@ -81,23 +82,19 @@ export default function ProfileScreen() {
     }
   }
 
+
   return (
     <View style={{ alignItems: "center" }}>
       <Image
         source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
-      <Text
-        style={{
-          justifyContents: "center",
-          textAlign: "center",
-        }}
-      >
+      <Text style={{ justifyContents: "center", textAlign: "center" }}>
         {user &&
           user.user_metadata &&
           user.user_metadata.email.slice(
             0,
-            user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
+            user.user_metadata.email.indexOf("@"),
           )}
       </Text>
       <Pressable>
@@ -106,7 +103,6 @@ export default function ProfileScreen() {
           title="School"
         />
       </Pressable>
-
       <Pressable>
         <Button
           onPress={() => {
