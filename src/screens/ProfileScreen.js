@@ -24,34 +24,50 @@ export default function ProfileScreen() {
   const { user } = useAuthentication();
   const [astrology, setAstrology] = useState("Pisces");
   const userSign = findAstrologySign();
-
-  //ADDED state var for profile picture
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+  const [inSchool, setInSchool] = useState(false);
 
   useEffect(() => {
-    //updated useEffect from Header
     async function fetchProfilePic() {
-      if (user === null) {
-        return;
-      }
+      if (!user) return;
 
       const { data, error } = await supabase
         .from("profiles")
-        .select("avatar_url")
+        .select("avatar_url, school")
         .eq("id", user.id)
         .single();
 
       if (error) {
         console.log("Profile pic fetch failure");
-      } else if (data.avatar_url) {
-        setProfilePicUrl(data.avatar_url);
+      } else if (data) {
+        if (data.avatar_url) setProfilePicUrl(data.avatar_url);
+        console.log("School field value:", data.school); // Debug line
+        setInSchool(!!data.school); // true if school is set
       }
     }
 
     fetchProfilePic();
-
     setAstrology(userSign.sign);
   }, [user]);
+
+  const handleSchoolButton = async () => {
+    if (inSchool) {
+      navigation.navigate("School");
+    } else {
+      if (!user) return;
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", user.id)
+        .single();
+
+      if (data && data.id) {
+        navigation.navigate("School");
+      } else {
+        navigation.navigate("FindYourSchool", {});
+      }
+    }
+  };
 
   return (
     <View style={{ alignItems: "center" }}>
@@ -59,19 +75,15 @@ export default function ProfileScreen() {
         source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
-      <Text
-        style={{
-          justifyContents: "center",
-          textAlign: "center",
-        }}
-      >
+      <Text style={{ justifyContents: "center", textAlign: "center" }}>
         {user &&
           user.user_metadata &&
           user.user_metadata.email.slice(
             0,
-            user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
+            user.user_metadata.email.indexOf("@"),
           )}
       </Text>
+      
       <Button
         onPress={() => {
           navigation.navigate("Astrology");
@@ -82,10 +94,8 @@ export default function ProfileScreen() {
       />
       <Pressable>
         <Button
-          onPress={() => {
-            navigation.navigate("FindYourSchool", {});
-          }}
-          title="Join School+"
+          onPress={handleSchoolButton}
+          title={inSchool ? "School Page" : "Join School+"}
         />
       </Pressable>
 
