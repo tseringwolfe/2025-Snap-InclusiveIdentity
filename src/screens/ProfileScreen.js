@@ -21,38 +21,62 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
   const [inSchool, setInSchool] = useState(false);
 
+  //ADDED state var for profile picture
+  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+
   useEffect(() => {
+    //updated useEffect from Header
     async function fetchProfilePic() {
-      if (!user) return;
+      if (user === null) {
+        return;
+      }
 
       const { data, error } = await supabase
-        .from("students")
-        .select("avatar_url, school")
-        .eq("user_id", user.id)
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", user.id)
         .single();
 
       if (error) {
-        console.log("Profile fetch failure");
-        console.log("School status: " + inSchool + "school name: " + data.school)
-      } else if (data) {
-        if (data.avatar_url) setProfilePicUrl(data.avatar_url);
-        if (data.school && data.school !== "") {
-          setInSchool(true);
-        }
+        console.log("Profile pic fetch failure");
+      } else if (data.avatar_url) {
+        setProfilePicUrl(data.avatar_url);
+      }
+    }
+
+    async function fetchSchoolData() {
+      if (user === null) {
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("students")
+        .select("user_id");
+      const userIDS = data.map((user) => user.user_id);
+
+      if (userIDS.includes(user.id)) {
+        setInSchool(true);
+      } else {
+        setInSchool(false);
+      }
+
+      if (error) {
+        console.error("Error fetching data: ", data);
       }
     }
 
     fetchProfilePic();
+    fetchSchoolData();
+
   }, [user]);
 
-  const handleSchoolButton = async () => {
+  const handleSchoolPress = () => {
     if (inSchool === true) {
       navigation.navigate("School");
     } else {
-      navigation.navigate("FindYourSchool", {});
+      navigation.navigate("FindYourSchool");
     }
   }
 
@@ -62,19 +86,23 @@ export default function ProfileScreen() {
         source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
-      <Text style={{ justifyContents: "center", textAlign: "center" }}>
+      <Text
+        style={{
+          justifyContents: "center",
+          textAlign: "center",
+        }}
+      >
         {user &&
           user.user_metadata &&
           user.user_metadata.email.slice(
             0,
-            user.user_metadata.email.indexOf("@"),
+            user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
           )}
       </Text>
-      
       <Pressable>
         <Button
-          onPress={handleSchoolButton}
-          title={"Join School+"}
+          onPress={handleSchoolPress}
+          title="School"
         />
       </Pressable>
 
