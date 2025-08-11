@@ -22,10 +22,12 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  const [astrology, setAstrology] = useState("Pisces");
-  const userSign = findAstrologySign();
-  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+
   const [inSchool, setInSchool] = useState(false);
+
+  //ADDED state var for profile picture
+  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+
 
   useEffect(() => {
     async function fetchProfilePic() {
@@ -46,28 +48,40 @@ export default function ProfileScreen() {
       }
     }
 
-    fetchProfilePic();
-    setAstrology(userSign.sign);
-  }, [user]);
+    async function fetchSchoolData() {
+      if (user === null) {
+        return;
+      }
 
-  const handleSchoolButton = async () => {
-    if (inSchool) {
-      navigation.navigate("School");
-    } else {
-      if (!user) return;
       const { data, error } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("id", user.id)
-        .single();
+        .from("students")
+        .select("user_id");
+      const userIDS = data.map((user) => user.user_id);
 
-      if (data && data.id) {
-        navigation.navigate("School");
+      if (userIDS.includes(user.id)) {
+        setInSchool(true);
       } else {
-        navigation.navigate("FindYourSchool", {});
+        setInSchool(false);
+      }
+
+      if (error) {
+        console.error("Error fetching data: ", data);
       }
     }
-  };
+
+    fetchProfilePic();
+    fetchSchoolData();
+
+  }, [user]);
+
+  const handleSchoolPress = () => {
+    if (inSchool === true) {
+      navigation.navigate("School");
+    } else {
+      navigation.navigate("FindYourSchool");
+    }
+  }
+
 
   return (
     <View style={{ alignItems: "center" }}>
@@ -83,24 +97,12 @@ export default function ProfileScreen() {
             user.user_metadata.email.indexOf("@"),
           )}
       </Text>
-      
-      <Button
-        onPress={() => {
-          navigation.navigate("Astrology");
-        }}
-        title={astrology}
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
       <Pressable>
         <Button
-          onPress={handleSchoolButton}
-          title={inSchool ? "School Page" : "Join School+"}
+          onPress={handleSchoolPress}
+          title="School"
         />
       </Pressable>
-
-      <Button onPress={handleSignOut} title="Log Out" />
-
       <Pressable>
         <Button
           onPress={() => {
@@ -109,6 +111,8 @@ export default function ProfileScreen() {
           title="Settings"
         />
       </Pressable>
+
+      <Button onPress={handleSignOut} title="Log Out" />
     </View>
   );
 }
