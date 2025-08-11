@@ -14,9 +14,7 @@ import {
 import { supabase } from "../utils/hooks/supabase";
 import { ButtonGroup } from "@rn-vui/base";
 
-const pronouns = [
-    'she/her', 'he/him', 'they/them', 'she/they', 'he/they', 'ze/zir', 'xe/xem', 'ask for pronouns'
-];
+const pronouns = ['she/her', 'he/him', 'they/them', 'she/they', 'he/they', 'ze/zir', 'xe/xem', 'ask for pronouns'];
 
 const ethnicities = ['black/african diaspora', 'latinx/hispanic', 'east asian', 'south east asian', 'south asian', 'pacific islander', 'middle eastern', 'white/european descent', 'indigenous', 'two or more races', 'other'];
 
@@ -32,30 +30,39 @@ export default function IdentityScreen() {
     const [preferredName, setPreferredName] = useState('');
     const [gradYear, setGradYear] = useState('');
 
-    async function addUserDataToTable(tableName, data) {
-        const { error } = await supabase
-            .from(tableName)
-            .insert(data);
-        console.log("inserting data");
-        if (error) {
-            console.error('Error inserting data:', error.message);
-        } else {
-            console.log('Data inserted successfully!');
+    const handlePress = async () => {
+        // Get current logged-in user
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError) {
+            console.error("Error fetching user:", userError.message);
+            return;
         }
-    }
 
-    const handlePress = () => {
-        console.log("in handle press");
-        addUserDataToTable('students', {
+        // Prepare data
+        const data = {
+            user_id: user.id, // Unique user ID from auth
             name: preferredName,
             pronouns: pronouns[pronounIndex],
             ethnicity: ethnicities[ethnicityIndex],
             graduation_year: gradYear,
             gender_expression: genders[genderIndex],
             sexual_orientation: sexualities[sexualityIndex],
-        });
+        };
 
-        navigation.navigate("Interests", {});
+        // Upsert into students table
+        const { error } = await supabase
+            .from('students')
+            .upsert(data, { onConflict: 'user_id' });
+        // onConflict tells Supabase which unique column to check
+
+        if (error) {
+            console.error("Error saving data:", error.message);
+        } else {
+            console.log("Data saved successfully!");
+            navigation.navigate("Interests");
+        }
+
+
     };
 
 
