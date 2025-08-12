@@ -37,7 +37,7 @@ export default function EnterEmailScreen({ }) {
         <>
             <View style={{ marginTop: 100, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ fontSize: 24, textAlign: 'center', fontFamily: "Avenir" }}>
-                    {/* Join the {school} Community  */}
+                    Join the {school} Community 
                 </Text>
             </View>
             <View style={styles.container}>
