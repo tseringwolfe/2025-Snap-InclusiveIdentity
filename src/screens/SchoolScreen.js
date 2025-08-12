@@ -20,6 +20,13 @@ export default function SchoolScreen({ }) {
     const [students, setStudents] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [selectedTab, setSelectedTab] = useState("Groups");
+    const [addedIds, setAddedIds] = useState([]); // array of IDs for added students
+
+    const handleAdd = (id) => {
+        setAddedIds((prev) =>
+            prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+        );
+    };
 
     const fetchData = async () => {
         try {
@@ -114,17 +121,46 @@ export default function SchoolScreen({ }) {
 
                     <ScrollView contentContainerStyle={styles.container}>
                         <View style={styles.grid}>
-                            {students.map(student => (
-                                <Pressable
-                                    key={student.user_id}
-                                    onPress={() => navigation.navigate("", {})}
-                                    style={styles.card}
-                                >
-                                    <Image source={{ uri: student.img_url }} style={styles.studentImage} />
-                                    <Text>{student.name}</Text>
-                                    <Text>{student.pronouns}</Text>
-                                </Pressable>
-                            ))}
+                            {students.map(student => {
+                                const isAdded = addedIds.includes(student.id);
+                                return (
+                                    <Pressable
+                                        key={student.user_id}
+                                        onPress={() => navigation.navigate("Connect", {})}
+                                        style={styles.card}
+                                    >
+                                        <Image source={{ uri: student.img_url }} style={styles.studentImage} />
+                                        <Text>{student.name}</Text>
+                                        <Text>{student.pronouns}</Text>
+
+                                        {/* add and meet buttons */}
+
+                                        <View style={styles.buttonRow}>
+                                            <Pressable
+                                                style={[
+                                                    styles.addButton,
+                                                    isAdded && styles.addedButton
+                                                ]}
+                                                onPress={() => handleAdd(student.id)}
+                                            >
+                                                <Text style={[
+                                                    styles.addButtonText,
+                                                    isAdded && styles.addedButtonText
+                                                ]}>
+                                                    {isAdded ? "Added✓" : "Add+"}
+                                                </Text>
+                                            </Pressable>
+
+                                            <Pressable
+                                                style={styles.meetButton}
+                                            // onPress={}
+                                            >
+                                                <Text style={styles.meetButtonText}>Meet</Text>
+                                            </Pressable>
+                                        </View>
+                                    </Pressable>
+                                );
+                            })}
                         </View>
                     </ScrollView>
 
@@ -205,6 +241,7 @@ const styles = StyleSheet.create({
         margin: 5,
         width: "30%", // about 3 cards per row
         aspectRatio: 0.75, // keeps them proportional
+        alignItems: "center",
     },
     nameText: {
         fontFamily: 'Avenir Next',
@@ -241,5 +278,48 @@ const styles = StyleSheet.create({
         top: 40,     // Adjust for safe area / status bar
         left: 16,
         zIndex: 10,  // Keep it on top of other elements
+    },
+    buttonRow: {
+        flexDirection: "row",
+        marginTop: 8,
+        gap: 6,
+    },
+    addButton: {
+        flex: 1,
+        backgroundColor: "rgba(255, 252, 0, 1)", // yellow
+        paddingVertical: 6,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: "#DBDBDB",
+        alignItems: "center",
+    },
+    addButtonText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '700',
+        fontSize: 10,
+        color: '#000',
+        textTransform: 'uppercase',
+    },
+    addedButton: {
+        backgroundColor: "#ccc", // gray when added
+    },
+    addedButtonText: {
+        color: "#555",
+    },
+    meetButton: {
+        flex: 1,
+        backgroundColor: "rgba(90, 80, 255, 1)", // bluish-purple
+        paddingVertical: 6,
+        borderRadius: 15,
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#DBDBDB",
+    },
+    meetButtonText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '700',
+        fontSize: 10,
+        color: '#fff',
+        textTransform: 'uppercase',
     },
 })
