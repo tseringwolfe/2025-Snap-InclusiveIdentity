@@ -33,6 +33,7 @@ export default function EnterEmailScreen({ }) {
         }
         setError('');
         navigation.replace("Identity", {});
+        navigation.replace("Identity", {});
     };
 
 
