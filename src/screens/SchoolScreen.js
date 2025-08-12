@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { supabase } from "../utils/hooks/supabase";
 
+
 export default function SchoolScreen({ }) {
     const navigation = useNavigation();
     const [students, setStudents] = useState([]);

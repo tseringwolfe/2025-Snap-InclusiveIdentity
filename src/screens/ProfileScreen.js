@@ -21,9 +21,10 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
+  const [inSchool, setInSchool] = useState(false);
 
   //ADDED state var for profile picture
-  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+  const [profilePicUrl, setProfilePicUrl] = useState("https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-snapchat-2019-square2-512.png");
 
   useEffect(() => {
     //updated useEffect from Header
@@ -42,7 +43,7 @@ export default function ProfileScreen() {
         console.log("Profile fetch failure");
         console.log("School status: " + inSchool + "school name: " + data.school)
       } else if (data) {
-        if (data.avatar_url) setProfilePicUrl(data.avatar_url);
+        if (data.avatar_url) { setProfilePicUrl(data.avatar_url); }
         console.log("School field value:", data.school); // Debug line
         setInSchool(!!data.school); // true if school is set
       }
