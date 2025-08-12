@@ -19,13 +19,13 @@ const interests = [
   { label: 'Academics', 
     item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science", "Computer Science" ]},
   { label: 'Food', 
-    item: ['Boba', 'Matcha', 'Kbbq'] },
+    item: ["Italian","French","Spanish","Mexican","Tex-Mex","American (Traditional)","Southern / Soul Food","Cajun / Creole","Caribbean","Brazilian","Middle Eastern","Mediterranean","Greek","Indian","Pakistani","Thai","Vietnamese","Chinese","Japanese","Korean","African (General)","Ethiopian","Moroccan","Fusion","Street Food"] },
   { label: 'Music', 
-    item: ['Rina Sawayama', 'Allie X', 'Chappell Roan', 'KATSEYE', 'Troye Sivan '] },
+    item: ["Pop", "Rock", "Alternative Rock", "Punk", "Indie Rock", "Jazz", "Blues", "Classical",  "Opera", "Hip-Hop", "Rap", "R&B",  "Soul",  "Country",  "Bluegrass",  "Reggae",  "Metal",  "EDM",  "House",  "Techno",  "Trance", "Lo-fi",  "Ambient",  "Experimental"] },
   { label: 'Art & Design', 
     item: ["Painting", "Sculpture", "Graphic Design", "Photography", "Fashion Design", "Interior Design", "Ceramics"] },
   { label: 'Gaming', 
-    item: ['Valorant', 'League of Legends', 'Overwatch', 'CSGO', 'Fortnite', 'Minecraft', 'Sonic Adventure 2', 'Roblox'] },
+    item: ["Action","Adventure","Role-Playing Game (RPG)","Action RPG","Strategy","Real-Time Strategy (RTS)","Turn-Based Strategy","Simulation","Life Simulation","Sports","Racing","Platformer","Puzzle","Fighting","Shooter (FPS)","Shooter (TPS)","Stealth","Survival","Horror","Metroidvania","Roguelike","Sandbox / Open World","MMO (Massively Multiplayer Online)","Battle Royale","Rhythm / Music"] },
 ];
 
 export default function InterestsScreen({ }) {
@@ -66,7 +66,7 @@ export default function InterestsScreen({ }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={{ ...styles.container, marginTop: 50 }}>
       {interests.map(({ label, item }) => (
         <View key={label} style={styles.categoryContainer}>
           <TouchableOpacity onPress={() => toggleCategory(label)}>
