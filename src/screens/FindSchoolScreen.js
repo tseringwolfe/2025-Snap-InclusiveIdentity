@@ -62,6 +62,7 @@ export default function FindSchoolScreen({ }) {
     const handleSchoolSelect = async (school) => {
         if (!user) return;
 
+
         const { error } = await supabase
             .from("students") 
             .update({ school: school.schoolname })
@@ -91,6 +92,7 @@ export default function FindSchoolScreen({ }) {
                         <Pressable key={school.schoolID} onPress={() => handleSchoolSelect(school)}>
                             <Card containerStyle={styles.Card}>
                                 <View style={{ alignItems: "center" }}>
+
                                     <Card.Title>{school.schoolname}</Card.Title>
                                     <Card.Divider />
                                     <Image
