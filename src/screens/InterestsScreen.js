@@ -2,20 +2,21 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { MultiSelect } from "react-native-element-dropdown";
 import {
-    View,
-    Text,
-    Button,
-    StyleSheet,
-    Pressable,
-    ScrollView,
-    TouchableOpacity,
-    Image,
+  View,
+  Text,
+  Image,
+  Button,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 
 import { supabase } from "../utils/hooks/supabase";
 import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you have a user context
 
 const interests = [
+
   { label: 'Academics', 
     item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science", "Computer Science" ]},
   { label: 'Food', 
@@ -26,6 +27,7 @@ const interests = [
     item: ["Painting", "Sculpture", "Graphic Design", "Photography", "Fashion Design", "Interior Design", "Ceramics"] },
   { label: 'Gaming', 
     item: ["Action","Adventure","Role-Playing Game (RPG)","Action RPG","Strategy","Real-Time Strategy (RTS)","Turn-Based Strategy","Simulation","Life Simulation","Sports","Racing","Platformer","Puzzle","Fighting","Shooter (FPS)","Shooter (TPS)","Stealth","Survival","Horror","Metroidvania","Roguelike","Sandbox / Open World","MMO (Massively Multiplayer Online)","Battle Royale","Rhythm / Music"] },
+
 ];
 
 export default function InterestsScreen({ }) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useActionState, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,10 @@ import { colors } from "../../assets/themes/colors";
 import StoriesBitmoji from "../components/StoriesBitmoji";
 import DiscoverFeed from "../components/DiscoverFeed";
 import { useNavigation } from "@react-navigation/native";
+import { supabase } from "../utils/hooks/supabase";
 
 import Header from "../components/Header";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 /* Discover FlatList will render a component in the list
  * for each object in the array DATA. This is just an example I took
@@ -41,6 +43,47 @@ const DATA = [
 export default function StoriesScreen({ route, navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
+  const { user } = useAuthentication();
+  const [inSchool, setInSchool] = useState(false);
+
+  useEffect(() => {
+
+    async function fetchSchoolData() {
+
+
+      if (user === null) {
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("students")
+        .select("user_id");
+      const userIDS = data.map((user) => user.user_id);
+
+
+      if (userIDS.includes(user.id)) {
+        setInSchool(true);
+      } else {
+        setInSchool(false);
+      }
+
+      if (error) {
+        console.error("Error fetching data: ", data);
+      }
+    }
+
+    fetchSchoolData();
+
+  }, [user]);
+
+
+  const handlePress = () => {
+    if (inSchool === true) {
+      navigation.navigate("School");
+    } else {
+      navigation.navigate("FindYourSchool");
+    }
+  }
 
   return (
     <View
@@ -79,6 +122,15 @@ export default function StoriesScreen({ route, navigation }) {
             <StoriesBitmoji />
           </ScrollView>
         </View>
+        <Text style={styles.sectionHeader}>Communities</Text>
+        <Pressable
+          style={{ justifyContent: "center", alignItems: "center" }}
+          onPress={handlePress}
+        >
+          <Image
+            source={require("../../assets/snapchat/communities.png")} />
+        </Pressable>
+
         <Text style={styles.sectionHeader}>Discover</Text>
         <FlatList
           contentContainerStyle={{ paddingBottom: 250 }}

@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { supabase } from "../utils/hooks/supabase";
 
+
 export default function SchoolScreen({ }) {
     const navigation = useNavigation();
     const [students, setStudents] = useState([]);
@@ -64,6 +65,7 @@ export default function SchoolScreen({ }) {
                 {/* back button */}
 
                 <View style={styles.backButton}>
+
                     <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
                 </View>
 
@@ -134,6 +136,7 @@ export default function SchoolScreen({ }) {
                                         <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
 
                                         {/* add and meet buttons */}
+
 
                                         <View style={styles.buttonRow}>
                                             <Pressable
