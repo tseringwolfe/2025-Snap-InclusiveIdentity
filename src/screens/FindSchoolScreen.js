@@ -71,8 +71,7 @@ export default function FindSchoolScreen({ }) {
             console.log("Error saving school:", error.message);
             return;
         }
-        let name = school.schoolname;
-        navigation.replace("EnterYourEmail", { school: name });
+        navigation.replace("EnterYourEmail", { school: school.schoolname });
     };
 
     return (
