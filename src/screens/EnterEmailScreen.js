@@ -17,7 +17,8 @@ import { Container } from "@rn-vui/base";
 
 export default function EnterEmailScreen({ }) {
     const navigation = useNavigation();
-
+    const route = useRoute();
+    const school = route.params?.school || ""; // <-- Add this line
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const { user } = useAuthentication();
@@ -29,7 +30,6 @@ export default function EnterEmailScreen({ }) {
             return;
         }
         setError('');
-        navigation.replace("Identity", {});
         navigation.replace("Identity", {});
     };
 
