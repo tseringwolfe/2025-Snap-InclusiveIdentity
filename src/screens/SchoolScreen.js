@@ -110,6 +110,7 @@ export default function SchoolScreen({ }) {
                     <ScrollView>
                         <View style={styles.container}>
                             {students.map((student) => (
+
                                 <Pressable style={{ color: "black" }} key={student.user_id} onPress={() => {
                                     navigation.navigate("", {});
                                 }}>

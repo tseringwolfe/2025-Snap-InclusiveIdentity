@@ -21,7 +21,6 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  const [inSchool, setInSchool] = useState(false);
 
   //ADDED state var for profile picture
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
@@ -82,6 +81,7 @@ export default function ProfileScreen() {
       navigation.navigate("FindYourSchool");
     }
   }
+
 
   return (
     <View style={{ alignItems: "center" }}>
