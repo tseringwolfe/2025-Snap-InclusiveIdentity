@@ -131,10 +131,10 @@ export default function SchoolScreen({ }) {
                                     >
                                         <Image source={{ uri: student.img_url }} style={styles.studentImage} />
                                         <Text>{student.name}</Text>
+
                                         <Text>{student.pronouns}</Text>
 
                                         {/* add and meet buttons */}
-
                                         <View style={styles.buttonRow}>
                                             <Pressable
                                                 style={[

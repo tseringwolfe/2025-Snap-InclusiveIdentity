@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import { Card } from "@rn-vui/base";
 import {
     View,
@@ -13,8 +11,8 @@ import {
     TextInput,
     ScrollView
 } from "react-native";
-
 import { supabase } from "../utils/hooks/supabase";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 // This is a mock list of schools. In a real application, data would be fetched from a database or API.
 let SchoolList = [
@@ -59,56 +57,65 @@ let SchoolList = [
 
 export default function FindSchoolScreen({ }) {
     const navigation = useNavigation();
+    const { user } = useAuthentication(); 
+
+    const handleSchoolSelect = async (school) => {
+        if (!user) return;
+
+
+        const { error } = await supabase
+            .from("students") 
+            .update({ school: school.schoolname })
+            .eq("user_id", user.id); 
+
+        if (error) {
+            console.log("Error saving school:", error.message);
+            return;
+        }
+        let name = school.schoolname;
+        navigation.navigate("EnterYourEmail", { school: name });
+    };
 
     return (
-        <>
-            <View style={styles.container}>
-                <TextInput
-                    style={{ id: "outlined" }}
-                    placeholder="Search for your school"
-                    marginBottom={20}
-                />
-                <Text
-                    style={{
-                        fontSize: 15,
+        <View style={styles.container}>
+            <TextInput
+                style={{ id: "outlined" }}
+                placeholder="Search for your school"
+                marginBottom={20}
+            />
+            <Text style={{ fontSize: 15, fontFamily: "Avenir" }}>
+                Plase select the college you attend
+            </Text>
+            <ScrollView>
+                <View style={styles.container}>
+                    {SchoolList.map((school) => (
+                        <Pressable key={school.schoolID} onPress={() => handleSchoolSelect(school)}>
+                            <Card containerStyle={styles.Card}>
+                                <View style={{ alignItems: "center" }}>
 
-                    }}>
-                    Plase select the college you attend
-                </Text>
-                <ScrollView>
-                    <View style={styles.container}>
-                        {SchoolList.map((school) => (
-                            <Pressable key={school.schoolID} onPress={() => {
-                                navigation.replace("EnterYourEmail", {});
-                            }}>
-                                <Card>
                                     <Card.Title>{school.schoolname}</Card.Title>
                                     <Card.Divider />
                                     <Image
                                         source={{ uri: school.schoolLogo }}
                                         style={styles.schoolLogo}
                                     />
-
-                                    <Text>{school.schoolAddress}</Text>
-                                </Card>
-                            </Pressable>
-
-                        ))}
-                    </View>
-                </ScrollView>
-
-                <Pressable>
-                    <Button
-                        onPress={() => {
-                            navigation.navigate("EnterYourEmail", {});
-                        }}
-                        title="Next"
-                    />
-                </Pressable>
-            </View>
-        </>
+                                    <Text style={{ textAlign: "center", fontFamily: "Avenir" }}>{school.schoolAddress}</Text>
+                                </View>
+                            </Card>
+                        </Pressable>
+                    ))}
+                </View>
+            </ScrollView>
+            <Pressable>
+                <Button
+                    onPress={() => {
+                        navigation.navigate("EnterYourEmail", { school:schoolname});
+                    }}
+                    title="Next"
+                />
+            </Pressable>
+        </View>
     );
-
 }
 
 const styles = StyleSheet.create({
@@ -117,7 +124,6 @@ const styles = StyleSheet.create({
         paddingTop: 100,
         alignItems: 'center',
     },
-
     schoolLogo: {
         width: 100,
         height: 100,
@@ -128,5 +134,17 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
 
+    },
+    Card: {
+        width: 350,
+        height: 220,
+        borderRadius: 10,
+        elevation: 3,
+        backgroundColor: "#fff",
+        padding: 16,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        justifyContent: "center",
+        alignItems: "center",
     }
-})
+});
