@@ -19,7 +19,7 @@ const Stack = createStackNavigator();
 export default function Header({ title }) {
   const navigation = useNavigation();
 
-  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+  const [profilePicUrl, setProfilePicUrl] = useState("https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-snapchat-2019-square2-512.png");
 
   const { user } = useAuthentication();
 
