@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
         margin: 5,
         width: "30%", // about 3 cards per row
         aspectRatio: 0.75, // keeps them proportional
+        alignItems: "center",
     },
     nameText: {
         fontFamily: 'Avenir Next',
