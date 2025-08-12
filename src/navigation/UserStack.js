@@ -16,6 +16,7 @@ import EnterEmailScreen from "../screens/EnterEmailScreen";
 import IdentityScreen from "../screens/IdentityScreen";
 import InterestsScreen from "../screens/InterestsScreen";
 import SchoolScreen from "../screens/SchoolScreen";
+import ConnectProfileScreen from "../screens/ConnectProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -94,6 +95,11 @@ export default function App() {
           name="School"
           component={SchoolScreen}
           options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Connect"
+          component={ConnectProfileScreen}
+          options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
