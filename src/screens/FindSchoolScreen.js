@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Card } from "@rn-vui/base";
 import {
@@ -12,7 +13,7 @@ import {
     ScrollView
 } from "react-native";
 import { supabase } from "../utils/hooks/supabase";
-import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you have a user context
+import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 // This is a mock list of schools. In a real application, data would be fetched from a database or API.
 let SchoolList = [
@@ -57,14 +58,11 @@ let SchoolList = [
 
 export default function FindSchoolScreen({ }) {
     const navigation = useNavigation();
-    const { user } = useAuthentication();
-    const [selectedSchool, setSelectedSchool] = useState("");
+    const { user } = useAuthentication(); 
 
     const handleSchoolSelect = async (school) => {
-        setSelectedSchool(school);
-        console.log("Selected school:", school);
         if (!user) return;
-        // Update the user's school in Supabase
+
         const { error } = await supabase
             .from("students") 
             .update({ school: school.schoolname })
@@ -72,35 +70,35 @@ export default function FindSchoolScreen({ }) {
 
         if (error) {
             console.log("Error saving school:", error.message);
-            // Optionally show an error message
             return;
         }
-        navigation.navigate("EnterYourEmail", {});
+        let name = school.schoolname;
+        navigation.navigate("EnterYourEmail", { school: name });
     };
 
     return (
         <View style={styles.container}>
-            <TextInput 
-                style={{ marginBottom: 20, borderWidth: 1, borderColor: "#ccc", width: 250, paddingHorizontal: 10, borderRadius: 8 }}
+            <TextInput
+                style={{ id: "outlined" }}
                 placeholder="Search for your school"
+                marginBottom={20}
             />
-            <Text style={{ fontSize: 15, marginBottom: 10 }}>
-                Please select the college you attend
+            <Text style={{ fontSize: 15, fontFamily: "Avenir" }}>
+                Plase select the college you attend
             </Text>
             <ScrollView>
                 <View style={styles.container}>
                     {SchoolList.map((school) => (
                         <Pressable key={school.schoolID} onPress={() => handleSchoolSelect(school)}>
-                            <Card>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Card containerStyle={styles.Card}>
+                                <View style={{ alignItems: "center" }}>
+                                    <Card.Title>{school.schoolname}</Card.Title>
+                                    <Card.Divider />
                                     <Image
                                         source={{ uri: school.schoolLogo }}
                                         style={styles.schoolLogo}
                                     />
-                                    <View style={{ marginLeft: 10 }}>
-                                        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{school.schoolname}</Text>
-                                        <Text>{school.schoolAddress}</Text>
-                                    </View>
+                                    <Text style={{ textAlign: "center", fontFamily: "Avenir" }}>{school.schoolAddress}</Text>
                                 </View>
                             </Card>
                         </Pressable>
@@ -110,12 +108,9 @@ export default function FindSchoolScreen({ }) {
             <Pressable>
                 <Button
                     onPress={() => {
-                        if (selectedSchool) {
-                            handleSchoolSelect(selectedSchool);
-                        }
+                        navigation.navigate("EnterYourEmail", { school:schoolname});
                     }}
                     title="Next"
-                    disabled={!selectedSchool}
                 />
             </Pressable>
         </View>
@@ -137,5 +132,18 @@ const styles = StyleSheet.create({
     mapIcon: {
         width: 24,
         height: 24,
+
+    },
+    Card: {
+        width: 350,
+        height: 220,
+        borderRadius: 10,
+        elevation: 3,
+        backgroundColor: "#fff",
+        padding: 16,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        justifyContent: "center",
+        alignItems: "center",
     }
 });
