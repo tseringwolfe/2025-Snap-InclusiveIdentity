@@ -17,6 +17,9 @@ import { Container } from "@rn-vui/base";
 
 export default function EnterEmailScreen({ }) {
     const navigation = useNavigation();
+  
+    const route = useRoute();
+    const school = route.params?.school || ""; // <-- Add this line
 
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
@@ -35,15 +38,15 @@ export default function EnterEmailScreen({ }) {
 
     return (
         <>
-            <View style={{ marginTop: 100, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 24, textAlign: 'center', fontFamily: "Avenir" }}>
-                    Join the {school} Community 
-                </Text>
-            </View>
+      
+        <View style={{ marginTop: 100, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 24, textAlign: 'center', fontFamily: "Avenir" }}>
+                Join the {school} Community
+            </Text>
+        </View>
             <View style={styles.container}>
                 <TextInput
-
-                    style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 350, marginBottom: 20, paddingHorizontal: 10 }}
+                    style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 250, marginBottom: 20, paddingHorizontal: 10 }}
 
                     placeholder="Enter your student email"
                     value={email}

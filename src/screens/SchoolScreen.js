@@ -65,7 +65,8 @@ export default function SchoolScreen({ }) {
                 {/* back button */}
 
                 <View style={styles.backButton}>
-                    <Button onPress={() => navigation.goBack()} title="×" />
+
+                    <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
                 </View>
 
                 <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
@@ -131,11 +132,12 @@ export default function SchoolScreen({ }) {
                                         style={styles.card}
                                     >
                                         <Image source={{ uri: student.img_url }} style={styles.studentImage} />
-                                        <Text>{student.name}</Text>
-
-                                        <Text>{student.pronouns}</Text>
+                                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
+                                        <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
 
                                         {/* add and meet buttons */}
+
+
                                         <View style={styles.buttonRow}>
                                             <Pressable
                                                 style={[
