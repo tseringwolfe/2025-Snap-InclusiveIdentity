@@ -15,7 +15,7 @@ import { supabase } from "../utils/hooks/supabase";
 
 export default function EnterEmailScreen({ }) {
     const navigation = useNavigation();
-  
+
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
 
@@ -26,7 +26,7 @@ export default function EnterEmailScreen({ }) {
             return;
         }
         setError('');
-        navigation.navigate("Identity", {});
+        navigation.replace("Identity", {});
     };
 
 
@@ -34,7 +34,7 @@ export default function EnterEmailScreen({ }) {
         <>
             <View style={styles.container}>
                 <TextInput
-                    style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 250, marginBottom: 20, paddingHorizontal: 10  }}
+                    style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 250, marginBottom: 20, paddingHorizontal: 10 }}
                     placeholder="Enter your student email"
                     value={email}
                     onChangeText={setEmail}

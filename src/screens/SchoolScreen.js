@@ -54,6 +54,11 @@ export default function SchoolScreen({ }) {
     return (
         <>
             <View style={{ flex: 1, position: "relative" }}>
+                {/* back button */}
+
+                <View style={styles.backButton}>
+                    <Button onPress={() => navigation.goBack()} title="×" />
+                </View>
 
                 <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
 
@@ -107,24 +112,18 @@ export default function SchoolScreen({ }) {
 
                     //connect tab
 
-                    <ScrollView>
-                        <View style={styles.container}>
-                            {students.map((student) => (
-                                <Pressable key={student.user_id} onPress={() => {
-                                    navigation.navigate("", {});
-                                }}>
-                                    <Card>
-                                        <Card.Title>{student.name}</Card.Title>
-                                        <Card.Divider />
-                                        {/* <Image
-                                            source={{ uri: school.schoolLogo }}
-                                            style={styles.schoolLogo}
-                                        /> */}
-
-                                        <Text>{student.pronouns}</Text>
-                                    </Card>
+                    <ScrollView contentContainerStyle={styles.container}>
+                        <View style={styles.grid}>
+                            {students.map(student => (
+                                <Pressable
+                                    key={student.user_id}
+                                    onPress={() => navigation.navigate("", {})}
+                                    style={styles.card}
+                                >
+                                    <Image source={{ uri: student.img_url }} style={styles.studentImage} />
+                                    <Text>{student.name}</Text>
+                                    <Text>{student.pronouns}</Text>
                                 </Pressable>
-
                             ))}
                         </View>
                     </ScrollView>
@@ -140,8 +139,16 @@ export default function SchoolScreen({ }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 100,
+        paddingTop: 25,
         alignItems: 'center',
+        backgroundColor: 'rgba(237, 238, 239, 1)', // matches .background-*
+    },
+    studentImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 40, // makes it a circle
+        marginBottom: 8,
+        backgroundColor: '#ccc', // placeholder bg while loading
     },
     schoolImage: {
         width: 150,
@@ -177,5 +184,62 @@ const styles = StyleSheet.create({
         width: 40,
         backgroundColor: "#000",
         borderRadius: 1,
+    },
+    grid: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "flex-start", // keeps first card in each row left-aligned
+        width: "100%",
+        paddingHorizontal: 10,
+    },
+    card: {
+        backgroundColor: "#fff",
+        borderRadius: 6,
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 3,
+        elevation: 3,
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+        margin: 5,
+        width: "30%", // about 3 cards per row
+        aspectRatio: 0.75, // keeps them proportional
+    },
+    nameText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '500',
+        fontSize: 12,
+        color: 'rgba(44, 49, 55, 1)', // matches .text-49 / .text-70
+    },
+    pronounsText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '500',
+        fontSize: 9,
+        color: 'rgba(100, 101, 103, 1)', // matches .text-16 / .text-67
+    },
+    button: {
+        backgroundColor: 'rgba(255, 252, 0, 1)', // .view-profile-button
+        borderRadius: 15,
+        paddingVertical: 7,
+        paddingHorizontal: 10,
+        shadowColor: '#000',
+        shadowOpacity: 0.5,
+        shadowRadius: 4.7,
+        elevation: 3,
+    },
+    buttonText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '700',
+        fontSize: 7,
+        letterSpacing: 0.34,
+        color: '#000',
+        textTransform: 'uppercase',
+    },
+    backButton: {
+        position: "absolute",
+        top: 40,     // Adjust for safe area / status bar
+        left: 16,
+        zIndex: 10,  // Keep it on top of other elements
     },
 })

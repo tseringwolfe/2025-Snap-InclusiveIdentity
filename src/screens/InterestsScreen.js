@@ -3,30 +3,40 @@ import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { MultiSelect } from "react-native-element-dropdown";
 import {
-    View,
-    Text,
-    Image,
-    Button,
-    StyleSheet,
-    Pressable,
-    ScrollView,
-    TouchableOpacity,
+  View,
+  Text,
+  Image,
+  Button,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 
 import { supabase } from "../utils/hooks/supabase";
 import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you have a user context
 
 const interests = [
-  { label: 'Academics', 
-    item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science", "Computer Science" ]},
-  { label: 'Food', 
-    item: ['Boba', 'Matcha', 'Kbbq'] },
-  { label: 'Music', 
-    item: ['Rina Sawayama', 'Allie X', 'Chappell Roan', 'KATSEYE', 'Troye Sivan '] },
-  { label: 'Art & Design', 
-    item: ["Painting", "Sculpture", "Graphic Design", "Photography", "Fashion Design", "Interior Design", "Ceramics"] },
-  { label: 'Gaming', 
-    item: ['Valorant', 'League of Legends', 'Overwatch', 'CSGO', 'Fortnite', 'Minecraft', 'Sonic Adventure 2', 'Roblox'] },
+  {
+    label: 'Academics',
+    item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science", "Computer Science"]
+  },
+  {
+    label: 'Food',
+    item: ['Boba', 'Matcha', 'Kbbq']
+  },
+  {
+    label: 'Music',
+    item: ['Rina Sawayama', 'Allie X', 'Chappell Roan', 'KATSEYE', 'Troye Sivan ']
+  },
+  {
+    label: 'Art & Design',
+    item: ["Painting", "Sculpture", "Graphic Design", "Photography", "Fashion Design", "Interior Design", "Ceramics"]
+  },
+  {
+    label: 'Gaming',
+    item: ['Valorant', 'League of Legends', 'Overwatch', 'CSGO', 'Fortnite', 'Minecraft', 'Sonic Adventure 2', 'Roblox']
+  },
 ];
 
 export default function InterestsScreen({ }) {
@@ -63,7 +73,7 @@ export default function InterestsScreen({ }) {
       // Optionally show an error message
       return;
     }
-    navigation.navigate("School", {});
+    navigation.replace("School", {});
   };
 
   return (

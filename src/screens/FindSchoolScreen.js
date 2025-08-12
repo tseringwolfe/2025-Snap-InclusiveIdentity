@@ -79,7 +79,7 @@ export default function FindSchoolScreen({ }) {
                     <View style={styles.container}>
                         {SchoolList.map((school) => (
                             <Pressable key={school.schoolID} onPress={() => {
-                                navigation.navigate("EnterYourEmail", {});
+                                navigation.replace("EnterYourEmail", {});
                             }}>
                                 <Card>
                                     <Card.Title>{school.schoolname}</Card.Title>
