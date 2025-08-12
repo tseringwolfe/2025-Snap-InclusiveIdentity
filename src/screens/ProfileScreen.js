@@ -24,9 +24,6 @@ export default function ProfileScreen() {
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
   const [inSchool, setInSchool] = useState(false);
 
-  //ADDED state var for profile picture
-  const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
-
   useEffect(() => {
     //updated useEffect from Header
     async function fetchProfilePic() {
