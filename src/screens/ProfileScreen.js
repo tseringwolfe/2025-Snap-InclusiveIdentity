@@ -2,7 +2,6 @@ import { Image, Text, View, Button, StyleSheet, Pressable } from "react-native";
 import { supabase } from "../utils/hooks/supabase";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { findAstrologySign } from "../utils/hooks/findAstrologySign";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 
@@ -23,24 +22,25 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
 
-  const [inSchool, setInSchool] = useState(false);
-
   //ADDED state var for profile picture
   const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
 
-
   useEffect(() => {
+    //updated useEffect from Header
     async function fetchProfilePic() {
-      if (!user) return;
+      if (user === null) {
+        return;
+      }
 
       const { data, error } = await supabase
-        .from("profiles")
+        .from("students")
         .select("avatar_url, school")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (error) {
-        console.log("Profile pic fetch failure");
+        console.log("Profile fetch failure");
+        console.log("School status: " + inSchool + "school name: " + data.school)
       } else if (data) {
         if (data.avatar_url) setProfilePicUrl(data.avatar_url);
         console.log("School field value:", data.school); // Debug line
@@ -89,12 +89,17 @@ export default function ProfileScreen() {
         source={{ uri: profilePicUrl }}
         style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
       />
-      <Text style={{ justifyContents: "center", textAlign: "center" }}>
+      <Text
+        style={{
+          justifyContents: "center",
+          textAlign: "center",
+        }}
+      >
         {user &&
           user.user_metadata &&
           user.user_metadata.email.slice(
             0,
-            user.user_metadata.email.indexOf("@"),
+            user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
           )}
       </Text>
       <Pressable>
@@ -103,6 +108,7 @@ export default function ProfileScreen() {
           title="School"
         />
       </Pressable>
+
       <Pressable>
         <Button
           onPress={() => {
