@@ -13,6 +13,7 @@ import {
 
 import { supabase } from "../utils/hooks/supabase";
 import { ButtonGroup } from "@rn-vui/base";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 const pronouns = ['she/her', 'he/him', 'they/them', 'she/they', 'he/they', 'ze/zir', 'xe/xem', 'ask for pronouns'];
 
@@ -29,12 +30,34 @@ export default function IdentityScreen() {
     const [genderIndex, setGenderIndex] = useState(0);
     const [preferredName, setPreferredName] = useState('');
     const [gradYear, setGradYear] = useState('');
+    const { user } = useAuthentication();
+    const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+
+
+    async function fetchProfilePic() {
+        if (user === null) {
+            return;
+        }
+
+        const { data, error } = await supabase
+            .from("profiles")
+            .select("avatar_url")
+            .eq("id", user.id)
+            .single();
+
+        if (error) {
+            console.log("Profile pic fetch failure");
+        } else if (data.avatar_url) {
+            setProfilePicUrl(data.avatar_url);
+        }
+    }
+
+    useEffect(() => {
+        fetchProfilePic();
+    }, [user]);
 
     const handlePress = async () => {
-        // Get current logged-in user
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError) {
-            console.error("Error fetching user:", userError.message);
+        if (user === null) {
             return;
         }
 
@@ -47,6 +70,7 @@ export default function IdentityScreen() {
             graduation_year: gradYear,
             gender_expression: genders[genderIndex],
             sexual_orientation: sexualities[sexualityIndex],
+            img_url: profilePicUrl,
         };
 
         // Upsert into students table
@@ -59,7 +83,7 @@ export default function IdentityScreen() {
             console.error("Error saving data:", error.message);
         } else {
             console.log("Data saved successfully!");
-            navigation.navigate("Interests");
+            navigation.replace("Interests");
         }
 
 

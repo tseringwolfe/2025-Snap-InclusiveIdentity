@@ -62,7 +62,7 @@ export default function InterestsScreen({ }) {
       // Optionally show an error message
       return;
     }
-    navigation.navigate("School", {});
+    navigation.replace("School", {});
   };
 
   return (

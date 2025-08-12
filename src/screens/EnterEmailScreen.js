@@ -17,8 +17,6 @@ import { Container } from "@rn-vui/base";
 
 export default function EnterEmailScreen({ }) {
     const navigation = useNavigation();
-    const route = useRoute();
-    const school = route.params?.school || "";
 
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
@@ -31,7 +29,7 @@ export default function EnterEmailScreen({ }) {
             return;
         }
         setError('');
-        navigation.navigate("Identity", {});
+        navigation.replace("Identity", {});
     };
 
 
@@ -44,7 +42,7 @@ export default function EnterEmailScreen({ }) {
         </View>
             <View style={styles.container}>
                 <TextInput
-                    style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 350, marginBottom: 20, paddingHorizontal: 10  }}
+                    style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 250, marginBottom: 20, paddingHorizontal: 10 }}
                     placeholder="Enter your student email"
                     value={email}
                     onChangeText={setEmail}
