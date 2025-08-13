@@ -171,24 +171,28 @@ export default function SchoolScreen({ }) {
                 <View style={{ flex: 1, }}>
                     <Text style={styles.connectionsHeader}>Connections for you</Text>
 
-                        <ScrollView contentContainerStyle={{
-                            flex: 1,
-                            paddingTop: 5,
-                            alignItems: 'center',
-                            backgroundColor: 'rgba(255, 255, 255, 1)',
-                        }}>
-                            <View style={styles.grid}>
-                                {students.map(student => {
-                                    const isAdded = addedIds.includes(student.id);
-                                    return (
-                                        <Pressable
-                                            key={student.user_id}
-                                            onPress={() => navigation.navigate("Connect", {})}
-                                            style={styles.card}
-                                        >
-                                            <Image source={{ uri: student.img_url }} style={styles.studentImage} />
-                                            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
-                                            <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
+ <ScrollView contentContainerStyle={styles.container}>
+                        <View style={styles.grid}>
+                            {sortedStudents.map(student => {
+                                const isAdded = addedIds.includes(student.id);
+                                const randomCommon = getRandomCommonInterests(student.commonInterests);
+                                return (
+                                    <Pressable
+                                        key={student.user_id}
+                                        onPress={() => navigation.navigate("Connect", {})}
+                                        style={styles.card}
+                                    >
+                                        <Image source={{ uri: student.img_url }} style={styles.studentImage} />
+                                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
+                                        <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
+                                        {/* Show 4 random common interests */}
+                                        <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginVertical: 6 }}>
+                                            {randomCommon.map((interest, idx) => (
+                                                <View key={idx} style={{ backgroundColor: "#FFD600", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2, margin: 2 }}>
+                                                    <Text style={{ fontSize: 10, fontFamily: "Avenir" }}>{interest}</Text>
+                                                </View>
+                                            ))}
+                                        </View>
 
                                             {/* add and meet buttons */}
 
