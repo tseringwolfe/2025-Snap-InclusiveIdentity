@@ -31,7 +31,7 @@ export default function IdentityScreen() {
     const [preferredName, setPreferredName] = useState('');
     const [gradYear, setGradYear] = useState('');
     const { user } = useAuthentication();
-    const [profilePicUrl, setProfilePicUrl] = useState("https://postimg.cc/9rDHcRX9");
+    const [profilePicUrl, setProfilePicUrl] = useState("https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-snapchat-2019-square2-512.png");
 
 
     async function fetchProfilePic() {
@@ -93,10 +93,10 @@ export default function IdentityScreen() {
     return (
         <>
             <View style={styles.container}>
-                <Button
+                {/* <Button
                     onPress={handlePress}
                     title="Skip"
-                />
+                /> */}
 
                 <Text>Enter Preferred Name: </Text>
                 <TextInput
