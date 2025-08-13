@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     textAlign: "left",
     paddingVertical: 4,
+    paddingLeft: 12,
     color: colors.primary,
     fontSize: fontHeader.fontSize,
     fontFamily: fontHeader.fontFamily,

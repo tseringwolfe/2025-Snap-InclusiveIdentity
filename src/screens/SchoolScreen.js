@@ -9,6 +9,7 @@ import {
     Pressable,
     TouchableOpacity,
     Modal,
+    TextInput,
 } from "react-native";
 import { Card } from "@rn-vui/base";
 import { useNavigation } from "@react-navigation/native";
@@ -21,10 +22,32 @@ export default function SchoolScreen({ }) {
     const [students, setStudents] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [selectedTab, setSelectedTab] = useState("Groups");
-    const [addedIds, setAddedIds] = useState([]);
-    const [trayVisible, setTrayVisible] = useState(false);
+    const [addedIds, setAddedIds] = useState([]); // array of IDs for added students
 
-    // Fetch data and set students/currentUser
+    const [meetModalVisible, setMeetModalVisible] = useState(false);
+    const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+
+    const [date, setDate] = useState("");
+    const [location, setLocation] = useState("");
+    const [time, setTime] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleMeetPress = () => {
+        setMeetModalVisible(true);
+    };
+
+    const handleSendRequest = () => {
+        // You could add logic here to send data to Supabase
+        setMeetModalVisible(false);
+        setConfirmModalVisible(true);
+    };
+
+    const handleAdd = (id) => {
+        setAddedIds((prev) =>
+            prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+        );
+    };
+
     const fetchData = async () => {
         try {
             const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -126,62 +149,134 @@ export default function SchoolScreen({ }) {
             {/* navigation for groups and connect */}
             {selectedTab === "Groups" ? (
 
-                // groups tab
-                <View style={{ alignItems: "center", paddingTop: 75 }}>
-                    <Image source={{ uri: "https://i.postimg.cc/FKCMdj4k/coming-soon.png" }} style={{ width: 350, height: 250 }} />
-                </View>
-            ) : (
+                    // groups tab
+                    <View style={{ alignItems: "center" }}>
+                        <Image source={require("../../assets/snapchat/groups.png")}
+                            style={{ width: 700, height: 700, resizeMode: "contain" }} />
 
-                //connect tab
-
-                <ScrollView contentContainerStyle={styles.container}>
-                    <View style={styles.grid}>
-                        {sortedStudents.map(student => {
-                            const isAdded = addedIds.includes(student.id);
-                            const randomCommon = getRandomCommonInterests(student.commonInterests);
-                            return (
-                                <Pressable
-                                    key={student.user_id}
-                                    onPress={() => navigation.navigate("Connect", {})}
-                                    style={styles.card}
-                                >
-                                    <Image source={{ uri: student.img_url }} style={styles.studentImage} />
-                                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
-                                    <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
-                                    {/* Show 4 random common interests */}
-                                    <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginVertical: 6 }}>
-                                        {randomCommon.map((interest, idx) => (
-                                            <View key={idx} style={{ backgroundColor: "#FFD600", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2, margin: 2 }}>
-                                                <Text style={{ fontSize: 10, fontFamily: "Avenir" }}>{interest}</Text>
-                                            </View>
-                                        ))}
-                                    </View>
-                                    <View style={styles.buttonRow}>
-                                        <Pressable
-                                            style={[
-                                                styles.addButton,
-                                                isAdded && styles.addedButton
-                                            ]}
-                                            onPress={() => handleAdd(student.id)}
-                                        >
-                                            <Text style={[
-                                                styles.addButtonText,
-                                                isAdded && styles.addedButtonText
-                                            ]}>
-                                                {isAdded ? "Added✓" : "Add+"}
-                                            </Text>
-                                        </Pressable>
-                                        <Pressable style={styles.meetButton}>
-                                            <Text style={styles.meetButtonText}>Meet</Text>
-                                        </Pressable>
-                                    </View>
-                                </Pressable>
-                            );
-                        })}
                     </View>
-                </ScrollView>
+                ) : (
 
-            )}
+                    //connect tab
+                    <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 1)', }}>
+                        <Text style={styles.connectionsHeader}>Connections for you</Text>
+
+                        <ScrollView contentContainerStyle={{
+                            flex: 1,
+                            paddingTop: 5,
+                            alignItems: 'center',
+                            backgroundColor: 'rgba(255, 255, 255, 1)',
+                        }}>
+                            <View style={styles.grid}>
+                                {students.map(student => {
+                                    const isAdded = addedIds.includes(student.id);
+                                    return (
+                                        <Pressable
+                                            key={student.user_id}
+                                            onPress={() => navigation.navigate("Connect", {})}
+                                            style={styles.card}
+                                        >
+                                            <Image source={{ uri: student.img_url }} style={styles.studentImage} />
+                                            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
+                                            <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
+
+                                            {/* add and meet buttons */}
+
+                                            <View style={styles.buttonRow}>
+                                                <Pressable
+                                                    style={[
+                                                        styles.addButton,
+                                                        isAdded && styles.addedButton
+                                                    ]}
+                                                    onPress={() => handleAdd(student.id)}
+                                                >
+                                                    <Text style={[
+                                                        styles.addButtonText,
+                                                        isAdded && styles.addedButtonText
+                                                    ]}>
+                                                        {isAdded ? "Added✓" : "Add+"}
+                                                    </Text>
+                                                </Pressable>
+
+                                                {/* meetup button */}
+
+                                                <Pressable style={styles.meetButton} onPress={handleMeetPress}>
+                                                    <Text style={styles.meetButtonText}>Meet</Text>
+                                                </Pressable>
+
+                                                {/* meetup request modal */}
+                                                <Modal visible={meetModalVisible} animationType="slide" transparent={true}>
+                                                    <View style={styles.modalOverlay}>
+                                                        <View style={styles.modalContainer}>
+                                                            <TouchableOpacity
+                                                                style={styles.closeButton}
+                                                                onPress={() => setMeetModalVisible(false)}
+                                                            >
+                                                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
+                                                            </TouchableOpacity>
+
+                                                            {/* Title */}
+                                                            <Text style={styles.modalTitle}>Meetup Request</Text>
+
+                                                            {/* Inputs */}
+                                                            <TextInput
+                                                                style={styles.input}
+                                                                placeholder="Meet up date"
+                                                                value={date}
+                                                                onChangeText={setDate}
+                                                            />
+                                                            <TextInput
+                                                                style={styles.input}
+                                                                placeholder="Meet up location"
+                                                                value={location}
+                                                                onChangeText={setLocation}
+                                                            />
+                                                            <TextInput
+                                                                style={styles.input}
+                                                                placeholder="Meet up time"
+                                                                value={time}
+                                                                onChangeText={setTime}
+                                                            />
+                                                            <TextInput
+                                                                style={styles.input}
+                                                                placeholder="Message"
+                                                                value={message}
+                                                                onChangeText={setMessage}
+                                                            />
+
+                                                            {/* Send Request Button */}
+                                                            <Pressable style={styles.sendButton} onPress={handleSendRequest}>
+                                                                <Text style={styles.sendButtonText}>Send Request</Text>
+                                                            </Pressable>
+                                                        </View>
+                                                    </View>
+                                                </Modal>
+
+                                                {/* Request Sent Modal */}
+                                                <Modal visible={confirmModalVisible} animationType="fade" transparent={true}>
+                                                    <View style={styles.modalOverlay}>
+                                                        <View style={styles.confirmModal}>
+                                                            <TouchableOpacity
+                                                                style={styles.closeButton}
+                                                                onPress={() => setConfirmModalVisible(false)}
+                                                            >
+                                                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
+                                                            </TouchableOpacity>
+                                                            <Text style={{ fontSize: 16 }}>Request sent...</Text>
+                                                        </View>
+                                                    </View>
+                                                </Modal>
+
+                                            </View>
+                                        </Pressable>
+                                    );
+                                })}
+                            </View>
+                        </ScrollView>
+
+                    </View>
+
+                )}
 
             <Modal
                 visible={trayVisible}
@@ -229,7 +324,7 @@ const styles = StyleSheet.create({
         borderRadius: 150 / 2,
     },
     tabContainer: {
-        backgroundColor: "#fff",
+        backgroundColor: "#ffffffff",
         paddingTop: 16,
     },
     tabRow: {
@@ -359,44 +454,64 @@ const styles = StyleSheet.create({
         color: '#fff',
         textTransform: 'uppercase',
     },
-    trayButton: {
-        top:40,
-        right: 16,
-        width: 30,
-        zIndex: 10,
-        height: 30,
-        borderRadius: 15,
-        backgroundColor: "#fff",
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
         justifyContent: "center",
         alignItems: "center",
-        shadowColor: "#000",
-        shadowOpacity: 0.2,
-        shadowOffset: { width: 0, height: 1 },
-        shadowRadius: 3,
-        position: "absolute",
     },
-    trayButtonText: {
-        fontFamily: 'Avenir Next',
-        fontWeight: '700',
-        fontSize: 10,
-        color: '#000',
-        textTransform: 'uppercase',
-    },
-    trayOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    trayContent: {
-        width: '80%',
-        backgroundColor: '#fff',
-        borderRadius: 8,
+    modalContainer: {
+        backgroundColor: "white",
+        borderRadius: 10,
         padding: 20,
-        shadowColor: '#000',
-        shadowOpacity: 0.3,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 4,
+        width: "85%",
+        position: "relative",
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 15,
+        textAlign: "center",
+    },
+    closeButton: {
+        position: "absolute",
+        right: 10,
+        top: 10,
+        padding: 5,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 10,
+    },
+    sendButton: {
+        backgroundColor: "#007bff",
+        paddingVertical: 10,
+        borderRadius: 8,
+        marginTop: 10,
+    },
+    sendButtonText: {
+        color: "white",
+        textAlign: "center",
+        fontWeight: "600",
+    },
+    confirmModal: {
+        backgroundColor: "white",
+        padding: 20,
+        borderRadius: 10,
+        width: "70%",
+        alignItems: "center",
+        position: "relative",
+    },
+    connectionsHeader: {
+        fontFamily: "Avenir Next",
+        fontSize: 12,
+        color: "#222222",
+        alignSelf: "flex-start",
+        marginLeft: 15,
+        marginTop: 10,
+        marginBottom: 5,
     },
 })
