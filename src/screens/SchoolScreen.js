@@ -14,6 +14,7 @@ import {
 import { Card } from "@rn-vui/base";
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../utils/hooks/supabase";
+import StoriesScreen from "./StoriesScreen";
 
 let scores = [];
 
@@ -101,6 +102,7 @@ export default function SchoolScreen({ }) {
         <View style={{ flex: 1, position: "relative" }}>
             {/* back button */}
 
+
             <View style={styles.backButton}>
                 <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
             </View>
@@ -109,6 +111,7 @@ export default function SchoolScreen({ }) {
                     <Text style={styles.trayButtonText}>...</Text>
                 </Pressable>
             </View>
+
 
             <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
                 {/* School Photo */}
@@ -296,13 +299,23 @@ export default function SchoolScreen({ }) {
             </Modal>
 
         </View>
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         paddingTop: 25,
-        paddingBottom: 350, 
+        alignItems: 'center',
+        paddingBottom: 350,
+        backgroundColor: 'rgba(237, 238, 239, 1)', // matches .background-*
+    },
+    studentImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 40, // makes it a circle
+        marginBottom: 8,
+        backgroundColor: '#ccc', // placeholder bg while loading
         backgroundColor: 'rgba(237, 238, 239, 1)', // matches .background-*
     },
     studentImage: {
@@ -456,16 +469,23 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: "white",
-        borderRadius: 10,
-        padding: 20,
-        width: "85%",
-        position: "relative",
+        borderRadius: 20,
+        paddingVertical: 25,
+        paddingHorizontal: 20,
+        width: "90%",
+        alignItems: "stretch",
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 5,
     },
     modalTitle: {
+        fontFamily: "Avenir Next",
+        fontWeight: "700",
         fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 15,
+        color: "#000",
         textAlign: "center",
+        marginBottom: 15,
     },
     closeButton: {
         position: "absolute",
@@ -478,18 +498,28 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         borderRadius: 8,
         padding: 10,
+        fontFamily: "Avenir Next",
+        fontSize: 14,
+        color: "#000",
         marginBottom: 10,
+        backgroundColor: "#fff",
     },
     sendButton: {
-        backgroundColor: "#007bff",
-        paddingVertical: 10,
-        borderRadius: 8,
-        marginTop: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#00B6FF",
+        paddingVertical: 12,
+        borderRadius: 25,
+        marginTop: 5,
     },
+
     sendButtonText: {
-        color: "white",
-        textAlign: "center",
+        fontFamily: "Avenir Next",
         fontWeight: "600",
+        fontSize: 14,
+        color: "#fff",
+        marginLeft: 8,
     },
     confirmModal: {
         backgroundColor: "white",

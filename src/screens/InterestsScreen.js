@@ -17,6 +17,7 @@ import { useAuthentication } from "../utils/hooks/useAuthentication"; // If you 
 
 const interests = [
 
+
   { label: 'Academics', 
     item: ['Mathematics', "Science", "History", "Literature", "Languages", "Philosophy", "Political Science", "Computer Science" ]},
   { label: 'Food', 
@@ -27,6 +28,7 @@ const interests = [
     item: ["Painting", "Sculpture", "Graphic Design", "Photography", "Fashion Design", "Interior Design", "Ceramics"] },
   { label: 'Gaming', 
     item: ["Action","Adventure","Role-Playing Game (RPG)","Action RPG","Strategy","Real-Time Strategy (RTS)","Turn-Based Strategy","Simulation","Life Simulation","Sports","Racing","Platformer","Puzzle","Fighting","Shooter (FPS)","Shooter (TPS)","Stealth","Survival","Horror","Metroidvania","Roguelike","Sandbox / Open World","MMO (Massively Multiplayer Online)","Battle Royale","Rhythm / Music"] },
+
 
 ];
 
@@ -111,6 +113,7 @@ export default function InterestsScreen({ }) {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         paddingTop: 60,
         alignItems: "center",
