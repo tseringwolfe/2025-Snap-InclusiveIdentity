@@ -93,134 +93,129 @@ export default function IdentityScreen() {
 
     return (
         <>
-        <ScrollView style={{marginBottom: 100}}>
-            <View style={styles.container}>
-                <Pressable
-                    onPress={handlePress}
-                    style={styles.ovalButton1}
-                >
-                    <Text style={styles.ovalButtonText1}>Skip</Text>
-                </Pressable>
-
-                <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: "Avenir", paddingTop: 20 }}>Enter Preferred Name: </Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setPreferredName}
-                    value={preferredName}
-                    placeholder="Preferred Name"
-                    keyboardType="default"
-                />
-
-                <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: "Avenir", paddingTop: 10 }}>Enter Graduation Year: </Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setGradYear}
-                    value={gradYear}
-                    placeholder="Graduation Year"
-                    keyboardType="numeric"
-                />
+            <ScrollView style={{ marginBottom: 100 }}>
+                <View style={styles.container}>
 
 
-                <Text style={{fontFamily: "Avenir", fontWeight: "bold", paddingTop: 30}}>Pronouns</Text>
-                <View style={styles.pillGroup}>
-                {pronouns.map((item, idx) => (
+                    <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: "Avenir", paddingTop: 20 }}>Enter Preferred Name: </Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setPreferredName}
+                        value={preferredName}
+                        placeholder="Preferred Name"
+                        keyboardType="default"
+                    />
+
+                    <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: "Avenir", paddingTop: 10 }}>Enter Graduation Year: </Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setGradYear}
+                        value={gradYear}
+                        placeholder="Graduation Year"
+                        keyboardType="numeric"
+                    />
+
+
+                    <Text style={{ fontFamily: "Avenir", fontWeight: "bold", paddingTop: 30 }}>Pronouns</Text>
+                    <View style={styles.pillGroup}>
+                        {pronouns.map((item, idx) => (
+                            <Pressable
+                                key={item}
+                                onPress={() => setPronounIndex(idx)}
+                                style={[
+                                    styles.pill,
+                                    pronounIndex === idx && styles.pillSelected,
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.pillText,
+                                        pronounIndex === idx && styles.pillTextSelected,
+                                    ]}
+                                >
+                                    {item}
+                                </Text>
+                            </Pressable>
+                        ))}
+                    </View>
+
+                    <Text style={{ fontFamily: "Avenir", fontWeight: "bold" }}>Ethnicity</Text>
+                    <View style={styles.pillGroup}>
+                        {ethnicities.map((item, idx) => (
+                            <Pressable
+                                key={item}
+                                onPress={() => setEthnicityIndex(idx)}
+                                style={[
+                                    styles.pill,
+                                    ethnicityIndex === idx && styles.pillSelected,
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.pillText,
+                                        ethnicityIndex === idx && styles.pillTextSelected,
+                                    ]}
+                                >
+                                    {item}
+                                </Text>
+                            </Pressable>
+                        ))}
+                    </View>
+
+                    <Text style={{ fontFamily: "Avenir", fontWeight: "bold" }}>Sexual Orientation</Text>
+                    <View style={styles.pillGroup}>
+                        {sexualities.map((item, idx) => (
+                            <Pressable
+                                key={item}
+                                onPress={() => setSexualityIndex(idx)}
+                                style={[
+                                    styles.pill,
+                                    sexualityIndex === idx && styles.pillSelected,
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.pillText,
+                                        sexualityIndex === idx && styles.pillTextSelected,
+                                    ]}
+                                >
+                                    {item}
+                                </Text>
+                            </Pressable>
+                        ))}
+                    </View>
+
+                    <Text style={{ fontFamily: "Avenir", fontWeight: "bold" }}>Gender Expression</Text>
+                    <View style={styles.pillGroup}>
+                        {genders.map((item, idx) => (
+                            <Pressable
+                                key={item}
+                                onPress={() => setGenderIndex(idx)}
+                                style={[
+                                    styles.pill,
+                                    genderIndex === idx && styles.pillSelected,
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.pillText,
+                                        genderIndex === idx && styles.pillTextSelected,
+                                    ]}
+                                >
+                                    {item}
+                                </Text>
+                            </Pressable>
+                        ))}
+                    </View>
+
                     <Pressable
-                    key={item}
-                    onPress={() => setPronounIndex(idx)}
-                    style={[
-                        styles.pill,
-                        pronounIndex === idx && styles.pillSelected,
-                    ]}
+                        style={styles.ovalButton}
+                        onPress={handlePress}
                     >
-                    <Text
-                        style={[
-                        styles.pillText,
-                        pronounIndex === idx && styles.pillTextSelected,
-                        ]}
-                    >
-                        {item}
-                    </Text>
+                        <Text style={styles.ovalButtonText}>Continue</Text>
                     </Pressable>
-                ))}
                 </View>
-
-                <Text style={{fontFamily: "Avenir", fontWeight: "bold"}}>Ethnicity</Text>
-                <View style={styles.pillGroup}>
-                {ethnicities.map((item, idx) => (
-                    <Pressable
-                    key={item}
-                    onPress={() => setEthnicityIndex(idx)}
-                    style={[
-                        styles.pill,
-                        ethnicityIndex === idx && styles.pillSelected,
-                    ]}
-                    >
-                    <Text
-                        style={[
-                        styles.pillText,
-                        ethnicityIndex === idx && styles.pillTextSelected,
-                        ]}
-                    >
-                        {item}
-                    </Text>
-                    </Pressable>
-                ))}
-                </View>
-
-                <Text style={{fontFamily: "Avenir", fontWeight: "bold"}}>Sexual Orientation</Text>
-                <View style={styles.pillGroup}>
-                {sexualities.map((item, idx) => (
-                    <Pressable
-                    key={item}
-                    onPress={() => setSexualityIndex(idx)}
-                    style={[
-                        styles.pill,
-                        sexualityIndex === idx && styles.pillSelected,
-                    ]}
-                    >
-                    <Text
-                        style={[
-                        styles.pillText,
-                        sexualityIndex === idx && styles.pillTextSelected,
-                        ]}
-                    >
-                        {item}
-                    </Text>
-                    </Pressable>
-                ))}
-                </View>
-
-                <Text style={{fontFamily: "Avenir", fontWeight: "bold"}}>Gender Expression</Text>
-                <View style={styles.pillGroup}>
-                {genders.map((item, idx) => (
-                    <Pressable
-                    key={item}
-                    onPress={() => setGenderExpressionIndex(idx)}
-                    style={[
-                        styles.pill,
-                        genderIndex === idx && styles.pillSelected,
-                    ]}
-                    >
-                    <Text
-                        style={[
-                        styles.pillText,
-                        genderIndex === idx && styles.pillTextSelected,
-                        ]}
-                    >
-                        {item}
-                    </Text>
-                    </Pressable>
-                ))}
-                </View>
-
-                <Pressable
-                    style={styles.ovalButton}
-                    onPress={handlePress}
-                >
-                    <Text style={styles.ovalButtonText}>Continue</Text>
-                </Pressable>
-            </View>
-        </ScrollView>
+            </ScrollView>
         </>
     );
 

@@ -151,9 +151,9 @@ export default function SchoolScreen({ }) {
                     </View>
                 ) : (
 
-                    //connect tab
-                    <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 1)', }}>
-                        <Text style={styles.connectionsHeader}>Connections for you</Text>
+                //connect tab
+                <View style={{ flex: 1, }}>
+                    <Text style={styles.connectionsHeader}>Connections for you</Text>
 
                         <ScrollView contentContainerStyle={{
                             flex: 1,
