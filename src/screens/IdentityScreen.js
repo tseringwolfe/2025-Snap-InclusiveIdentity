@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Pressable,
     TextInput,
+    ScrollView
 } from "react-native";
 
 import { supabase } from "../utils/hooks/supabase";
@@ -92,22 +93,25 @@ export default function IdentityScreen() {
 
     return (
         <>
+        <ScrollView style={{marginBottom: 100}}>
             <View style={styles.container}>
-                <Button
+                <Pressable
                     onPress={handlePress}
-                    title="Skip"
-                />
+                    style={styles.ovalButton1}
+                >
+                    <Text style={styles.ovalButtonText1}>Skip</Text>
+                </Pressable>
 
-                <Text>Enter Preferred Name: </Text>
+                <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: "Avenir", paddingTop: 20 }}>Enter Preferred Name: </Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setPreferredName}
                     value={preferredName}
                     placeholder="Preferred Name"
-                    keyboardType="numeric"
+                    keyboardType="default"
                 />
 
-                <Text>Enter Graduation Year: </Text>
+                <Text style={{ fontSize: 20, textAlign: 'center', fontFamily: "Avenir", paddingTop: 10 }}>Enter Graduation Year: </Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setGradYear}
@@ -117,53 +121,106 @@ export default function IdentityScreen() {
                 />
 
 
-                <Text>Pronouns</Text>
-                <ButtonGroup
-                    buttons={pronouns}
-                    selectedIndex={pronounIndex}
-                    onPress={(value) => {
-                        setPronounIndex(value);
-                    }}
-                    containerStyle={{ marginBottom: 20 }}
-                />
+                <Text style={{fontFamily: "Avenir", fontWeight: "bold", paddingTop: 30}}>Pronouns</Text>
+                <View style={styles.pillGroup}>
+                {pronouns.map((item, idx) => (
+                    <Pressable
+                    key={item}
+                    onPress={() => setPronounIndex(idx)}
+                    style={[
+                        styles.pill,
+                        pronounIndex === idx && styles.pillSelected,
+                    ]}
+                    >
+                    <Text
+                        style={[
+                        styles.pillText,
+                        pronounIndex === idx && styles.pillTextSelected,
+                        ]}
+                    >
+                        {item}
+                    </Text>
+                    </Pressable>
+                ))}
+                </View>
 
-                <Text>Ethnicity</Text>
-                <ButtonGroup
-                    buttons={ethnicities}
-                    selectedIndex={ethnicityIndex}
-                    onPress={(value) => {
-                        setEthnicityIndex(value);
-                    }}
-                    containerStyle={{ marginBottom: 20 }}
-                />
+                <Text style={{fontFamily: "Avenir", fontWeight: "bold"}}>Ethnicity</Text>
+                <View style={styles.pillGroup}>
+                {ethnicities.map((item, idx) => (
+                    <Pressable
+                    key={item}
+                    onPress={() => setEthnicityIndex(idx)}
+                    style={[
+                        styles.pill,
+                        ethnicityIndex === idx && styles.pillSelected,
+                    ]}
+                    >
+                    <Text
+                        style={[
+                        styles.pillText,
+                        ethnicityIndex === idx && styles.pillTextSelected,
+                        ]}
+                    >
+                        {item}
+                    </Text>
+                    </Pressable>
+                ))}
+                </View>
 
-                <Text>Sexual Orientation</Text>
-                <ButtonGroup
-                    buttons={sexualities}
-                    selectedIndex={sexualityIndex}
-                    onPress={(value) => {
-                        setSexualityIndex(value);
-                    }}
-                    containerStyle={{ marginBottom: 20 }}
-                />
+                <Text style={{fontFamily: "Avenir", fontWeight: "bold"}}>Sexual Orientation</Text>
+                <View style={styles.pillGroup}>
+                {sexualities.map((item, idx) => (
+                    <Pressable
+                    key={item}
+                    onPress={() => setSexualityIndex(idx)}
+                    style={[
+                        styles.pill,
+                        sexualityIndex === idx && styles.pillSelected,
+                    ]}
+                    >
+                    <Text
+                        style={[
+                        styles.pillText,
+                        sexualityIndex === idx && styles.pillTextSelected,
+                        ]}
+                    >
+                        {item}
+                    </Text>
+                    </Pressable>
+                ))}
+                </View>
 
-                <Text>Gender Expression</Text>
-                <ButtonGroup
-                    buttons={genders}
-                    selectedIndex={genderIndex}
-                    onPress={(value) => {
-                        setGenderIndex(value);
-                    }}
-                    containerStyle={{ marginBottom: 20 }}
-                />
+                <Text style={{fontFamily: "Avenir", fontWeight: "bold"}}>Gender Expression</Text>
+                <View style={styles.pillGroup}>
+                {genders.map((item, idx) => (
+                    <Pressable
+                    key={item}
+                    onPress={() => setGenderExpressionIndex(idx)}
+                    style={[
+                        styles.pill,
+                        genderIndex === idx && styles.pillSelected,
+                    ]}
+                    >
+                    <Text
+                        style={[
+                        styles.pillText,
+                        genderIndex === idx && styles.pillTextSelected,
+                        ]}
+                    >
+                        {item}
+                    </Text>
+                    </Pressable>
+                ))}
+                </View>
 
-                <Pressable>
-                    <Button
-                        onPress={handlePress}
-                        title="Continue"
-                    />
+                <Pressable
+                    style={styles.ovalButton}
+                    onPress={handlePress}
+                >
+                    <Text style={styles.ovalButtonText}>Continue</Text>
                 </Pressable>
             </View>
+        </ScrollView>
         </>
     );
 
@@ -180,5 +237,62 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10,
+        width: 300,
+        paddingBottom: 10,
+    },
+    pillGroup: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        marginBottom: 20,
+    },
+    pill: {
+        borderRadius: 20,
+        backgroundColor: "#eee",
+        margin: 4,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        minWidth: 0,
+        flexShrink: 1,
+    },
+    pillSelected: {
+        backgroundColor: "#FFD600",
+    },
+    pillText: {
+        color: "#333",
+        fontSize: 14,
+        fontFamily: "Avenir",
+    },
+    pillTextSelected: {
+        color: "#000",
+        fontWeight: "bold",
+    },
+    ovalButton: {
+        backgroundColor: '#007AFF',
+        borderRadius: 100,
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        alignItems: 'center',
+        marginTop: 20,
+        width: 275,
+    },
+    ovalButton1: {
+        backgroundColor: '#f5ba5aff',
+        borderRadius: 60,
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        alignItems: 'center',
+        marginTop: 20,
+        width: 100,
+    },
+    ovalButtonText: {
+        color: '#fff',
+        fontSize: 25,
+        fontFamily: "Avenir",
+    },
+    ovalButtonText1: {
+        color: '#fff',
+        fontSize: 15,
+        fontFamily: "Avenir",
     },
 })

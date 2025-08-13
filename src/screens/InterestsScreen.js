@@ -111,10 +111,6 @@ export default function InterestsScreen({ }) {
 }
 
 const styles = StyleSheet.create({
-    iphone1616: {
-        flex: 1,
-        backgroundColor: "#fff"
-    },
     container: {
         paddingTop: 60,
         alignItems: "center",
