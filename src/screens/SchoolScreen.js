@@ -114,7 +114,7 @@ export default function SchoolScreen({ }) {
                 {/* School Photo */}
                 <Image
                     source={{ uri: "https://avatars.githubusercontent.com/u/85767261?s=200&v=4" }}
-                    style={styles.schoolImage}/>
+                    style={styles.schoolImage} />
                 <Text>Snap Academies</Text>
                 {/* user info */}
                 <Text>{currentUser.name} - {currentUser.pronouns} | Class of {currentUser.graduation_year}</Text>
@@ -176,101 +176,101 @@ export default function SchoolScreen({ }) {
 
                                             {/* add and meet buttons */}
 
-                                            <View style={styles.buttonRow}>
-                                                <Pressable
-                                                    style={[
-                                                        styles.addButton,
-                                                        isAdded && styles.addedButton
-                                                    ]}
-                                                    onPress={() => handleAdd(student.id)}
-                                                >
-                                                    <Text style={[
-                                                        styles.addButtonText,
-                                                        isAdded && styles.addedButtonText
-                                                    ]}>
-                                                        {isAdded ? "Added✓" : "Add+"}
-                                                    </Text>
-                                                </Pressable>
+                                        <View style={styles.buttonRow}>
+                                            <Pressable
+                                                style={[
+                                                    styles.addButton,
+                                                    isAdded && styles.addedButton
+                                                ]}
+                                                onPress={() => handleAdd(student.id)}
+                                            >
+                                                <Text style={[
+                                                    styles.addButtonText,
+                                                    isAdded && styles.addedButtonText
+                                                ]}>
+                                                    {isAdded ? "Added✓" : "Add+"}
+                                                </Text>
+                                            </Pressable>
 
-                                                {/* meetup button */}
+                                            {/* meetup button */}
 
-                                                <Pressable style={styles.meetButton} onPress={handleMeetPress}>
-                                                    <Text style={styles.meetButtonText}>Meet</Text>
-                                                </Pressable>
+                                            <Pressable style={styles.meetButton} onPress={handleMeetPress}>
+                                                <Text style={styles.meetButtonText}>Meet</Text>
+                                            </Pressable>
 
-                                                {/* meetup request modal */}
-                                                <Modal visible={meetModalVisible} animationType="slide" transparent={true}>
-                                                    <View style={styles.modalOverlay}>
-                                                        <View style={styles.modalContainer}>
-                                                            <TouchableOpacity
-                                                                style={styles.closeButton}
-                                                                onPress={() => setMeetModalVisible(false)}
-                                                            >
-                                                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
-                                                            </TouchableOpacity>
+                                            {/* meetup request modal */}
+                                            <Modal visible={meetModalVisible} animationType="slide" transparent={true}>
+                                                <View style={styles.modalOverlay}>
+                                                    <View style={styles.modalContainer}>
+                                                        <TouchableOpacity
+                                                            style={styles.closeButton}
+                                                            onPress={() => setMeetModalVisible(false)}
+                                                        >
+                                                            <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
+                                                        </TouchableOpacity>
 
-                                                            {/* Title */}
-                                                            <Text style={styles.modalTitle}>Meetup Request</Text>
+                                                        {/* Title */}
+                                                        <Text style={styles.modalTitle}>Meetup Request</Text>
 
-                                                            {/* Inputs */}
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Meet up date"
-                                                                value={date}
-                                                                onChangeText={setDate}
-                                                            />
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Meet up location"
-                                                                value={location}
-                                                                onChangeText={setLocation}
-                                                            />
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Meet up time"
-                                                                value={time}
-                                                                onChangeText={setTime}
-                                                            />
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Message"
-                                                                value={message}
-                                                                onChangeText={setMessage}
-                                                            />
+                                                        {/* Inputs */}
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Meet up date"
+                                                            value={date}
+                                                            onChangeText={setDate}
+                                                        />
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Meet up location"
+                                                            value={location}
+                                                            onChangeText={setLocation}
+                                                        />
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Meet up time"
+                                                            value={time}
+                                                            onChangeText={setTime}
+                                                        />
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Message"
+                                                            value={message}
+                                                            onChangeText={setMessage}
+                                                        />
 
-                                                            {/* Send Request Button */}
-                                                            <Pressable style={styles.sendButton} onPress={handleSendRequest}>
-                                                                <Text style={styles.sendButtonText}>Send Request</Text>
-                                                            </Pressable>
-                                                        </View>
+                                                        {/* Send Request Button */}
+                                                        <Pressable style={styles.sendButton} onPress={handleSendRequest}>
+                                                            <Text style={styles.sendButtonText}>Send Request</Text>
+                                                        </Pressable>
                                                     </View>
-                                                </Modal>
+                                                </View>
+                                            </Modal>
 
-                                                {/* Request Sent Modal */}
-                                                <Modal visible={confirmModalVisible} animationType="fade" transparent={true}>
-                                                    <View style={styles.modalOverlay}>
-                                                        <View style={styles.confirmModal}>
-                                                            <TouchableOpacity
-                                                                style={styles.closeButton}
-                                                                onPress={() => setConfirmModalVisible(false)}
-                                                            >
-                                                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
-                                                            </TouchableOpacity>
-                                                            <Text style={{ fontSize: 16 }}>Request sent...</Text>
-                                                        </View>
+                                            {/* Request Sent Modal */}
+                                            <Modal visible={confirmModalVisible} animationType="fade" transparent={true}>
+                                                <View style={styles.modalOverlay}>
+                                                    <View style={styles.confirmModal}>
+                                                        <TouchableOpacity
+                                                            style={styles.closeButton}
+                                                            onPress={() => setConfirmModalVisible(false)}
+                                                        >
+                                                            <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
+                                                        </TouchableOpacity>
+                                                        <Text style={{ fontSize: 16 }}>Request sent...</Text>
                                                     </View>
-                                                </Modal>
+                                                </View>
+                                            </Modal>
 
-                                            </View>
-                                        </Pressable>
-                                    );
-                                })}
-                            </View>
-                        </ScrollView>
+                                        </View>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    </ScrollView>
 
-                    </View>
+                </View>
 
-                )}
+            )}
 
             <Modal
                 visible={trayVisible}
