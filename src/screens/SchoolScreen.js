@@ -24,7 +24,7 @@ export default function SchoolScreen({ }) {
     const [currentUser, setCurrentUser] = useState({});
     const [selectedTab, setSelectedTab] = useState("Groups");
     const [addedIds, setAddedIds] = useState([]); // array of IDs for added students
-
+    const [trayVisible, setTrayVisible] = useState(false);
     const [meetModalVisible, setMeetModalVisible] = useState(false);
     const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
@@ -35,6 +35,19 @@ export default function SchoolScreen({ }) {
 
     const handleMeetPress = () => {
         setMeetModalVisible(true);
+    };
+
+    const handleSignOut = async () => {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+        console.error("Error signing out:", error.message);
+        } else {
+        // Handle successful sign out (e.g., redirect to login screen)
+        }
+    } catch (error) {
+        console.error("Unexpected error:", error);
+    }
     };
 
     const handleSendRequest = () => {
@@ -286,12 +299,15 @@ export default function SchoolScreen({ }) {
                         <Pressable onPress={() => setTrayVisible(false)}>
                             <Text style={{ fontSize: 18, color: "#888", textAlign: "right" }}>Close</Text>
                         </Pressable>
-                        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>Tray Options</Text>
+                        <Text style={{ fontSize: 25, fontWeight: "bold", marginBottom: 16 }}>Settings</Text>
                         <Pressable onPress={() => { navigation.navigate('Identity') }}>
                             <Text style={{ fontSize: 16, marginBottom: 12 }}>Edit Identity</Text>
                         </Pressable>
                         <Pressable onPress={() => { navigation.navigate('Interests') }}>
                             <Text style={{ fontSize: 16, marginBottom: 12 }}>Edit Interests</Text>
+                        </Pressable>
+                        <Pressable onPress={() => { handleSignOut() }}>
+                            <Text style={{ fontSize: 16, marginBottom: 12, }}>Sign Out</Text>
                         </Pressable>
                         {/* Add more options as needed */}
                     </View>
@@ -537,5 +553,31 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginTop: 10,
         marginBottom: 5,
+    },
+    trayButton: {
+        position: "absolute",
+        top: 40,
+        zIndex: 10,
+        right: 20,
+        backgroundColor: "#fff",
+        borderRadius: 30,
+        padding: 10,
+        shadowColor: "#000",
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+    },
+    trayOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.3)",
+        justifyContent: "flex-end",
+    },
+    trayContent: {
+        backgroundColor: "#fff",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        padding: 24,
+        minHeight: 180,
+        fontFamily: "Avenir",
     },
 })
