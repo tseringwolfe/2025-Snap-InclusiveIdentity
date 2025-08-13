@@ -112,7 +112,7 @@ export default function SchoolScreen({ }) {
                 {/* School Photo */}
                 <Image
                     source={{ uri: "https://avatars.githubusercontent.com/u/85767261?s=200&v=4" }}
-                    style={styles.schoolImage}/>
+                    style={styles.schoolImage} />
                 <Text>Snap Academies</Text>
                 {/* user info */}
                 <Text>{currentUser.name} - {currentUser.pronouns} | Class of {currentUser.graduation_year}</Text>
@@ -148,133 +148,132 @@ export default function SchoolScreen({ }) {
             ) : (
 
                 //connect tab
-              <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 1)', }}>
-                        <Text style={styles.connectionsHeader}>Connections for you</Text>
+                <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 1)', }}>
+                    <Text style={styles.connectionsHeader}>Connections for you</Text>
 
 
-                <ScrollView contentContainerStyle={styles.container}>
-                    <View style={styles.grid}>
-                        {sortedStudents.map(student => {
-                            const isAdded = addedIds.includes(student.id);
-                            const randomCommon = getRandomCommonInterests(student.commonInterests);
-                            return (
-                                <Pressable
-                                    key={student.user_id}
-                                    onPress={() => navigation.navigate("Connect", {})}
-                                    style={styles.card}
-                                >
-                                    <Image source={{ uri: student.img_url }} style={styles.studentImage} />
-                                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
-                                    <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
-                                    {/* Show 4 random common interests */}
-                                    <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginVertical: 6 }}>
-                                        {randomCommon.map((interest, idx) => (
-                                            <View key={idx} style={{ backgroundColor: "#FFD600", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2, margin: 2 }}>
-                                                <Text style={{ fontSize: 10, fontFamily: "Avenir" }}>{interest}</Text>
-                                            </View>
-                                        ))}
-                                    </View>
-    
-                                            {/* add and meet buttons */}
+                    <ScrollView contentContainerStyle={styles.container}>
+                        <View style={styles.grid}>
+                            {sortedStudents.map(student => {
+                                const isAdded = addedIds.includes(student.id);
+                                const randomCommon = getRandomCommonInterests(student.commonInterests);
+                                return (
+                                    <Pressable
+                                        key={student.user_id}
+                                        onPress={() => navigation.navigate("Connect", {})}
+                                        style={styles.card}
+                                    >
+                                        <Image source={{ uri: student.img_url }} style={styles.studentImage} />
+                                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
+                                        <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
+                                        {/* Show 4 random common interests */}
+                                        <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginVertical: 6 }}>
+                                            {randomCommon.map((interest, idx) => (
+                                                <View key={idx} style={{ backgroundColor: "#FFD600", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2, margin: 2 }}>
+                                                    <Text style={{ fontSize: 10, fontFamily: "Avenir" }}>{interest}</Text>
+                                                </View>
+                                            ))}
+                                        </View>
 
-                                            <View style={styles.buttonRow}>
-                                                <Pressable
-                                                    style={[
-                                                        styles.addButton,
-                                                        isAdded && styles.addedButton
-                                                    ]}
-                                                    onPress={() => handleAdd(student.id)}
-                                                >
-                                                    <Text style={[
-                                                        styles.addButtonText,
-                                                        isAdded && styles.addedButtonText
-                                                    ]}>
-                                                        {isAdded ? "Added✓" : "Add+"}
-                                                    </Text>
-                                                </Pressable>
+                                        {/* add and meet buttons */}
 
-                                                {/* meetup button */}
+                                        <View style={styles.buttonRow}>
+                                            <Pressable
+                                                style={[
+                                                    styles.addButton,
+                                                    isAdded && styles.addedButton
+                                                ]}
+                                                onPress={() => handleAdd(student.id)}
+                                            >
+                                                <Text style={[
+                                                    styles.addButtonText,
+                                                    isAdded && styles.addedButtonText
+                                                ]}>
+                                                    {isAdded ? "Added✓" : "Add+"}
+                                                </Text>
+                                            </Pressable>
 
-                                                <Pressable style={styles.meetButton} onPress={handleMeetPress}>
-                                                    <Text style={styles.meetButtonText}>Meet</Text>
-                                                </Pressable>
+                                            {/* meetup button */}
 
-                                                {/* meetup request modal */}
-                                                <Modal visible={meetModalVisible} animationType="slide" transparent={true}>
-                                                    <View style={styles.modalOverlay}>
-                                                        <View style={styles.modalContainer}>
-                                                            <TouchableOpacity
-                                                                style={styles.closeButton}
-                                                                onPress={() => setMeetModalVisible(false)}
-                                                            >
-                                                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
-                                                            </TouchableOpacity>
+                                            <Pressable style={styles.meetButton} onPress={handleMeetPress}>
+                                                <Text style={styles.meetButtonText}>Meet</Text>
+                                            </Pressable>
 
-                                                            {/* Title */}
-                                                            <Text style={styles.modalTitle}>Meetup Request</Text>
+                                            {/* meetup request modal */}
+                                            <Modal visible={meetModalVisible} animationType="slide" transparent={true}>
+                                                <View style={styles.modalOverlay}>
+                                                    <View style={styles.modalContainer}>
+                                                        <TouchableOpacity
+                                                            style={styles.closeButton}
+                                                            onPress={() => setMeetModalVisible(false)}
+                                                        >
+                                                            <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
+                                                        </TouchableOpacity>
 
-                                                            {/* Inputs */}
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Meet up date"
-                                                                value={date}
-                                                                onChangeText={setDate}
-                                                            />
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Meet up location"
-                                                                value={location}
-                                                                onChangeText={setLocation}
-                                                            />
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Meet up time"
-                                                                value={time}
-                                                                onChangeText={setTime}
-                                                            />
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Message"
-                                                                value={message}
-                                                                onChangeText={setMessage}
-                                                            />
+                                                        {/* Title */}
+                                                        <Text style={styles.modalTitle}>Meetup Request</Text>
 
-                                                            {/* Send Request Button */}
-                                                            <Pressable style={styles.sendButton} onPress={handleSendRequest}>
-                                                                <Text style={styles.sendButtonText}>Send Request</Text>
-                                                            </Pressable>
-                                                        </View>
+                                                        {/* Inputs */}
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Meet up date"
+                                                            value={date}
+                                                            onChangeText={setDate}
+                                                        />
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Meet up location"
+                                                            value={location}
+                                                            onChangeText={setLocation}
+                                                        />
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Meet up time"
+                                                            value={time}
+                                                            onChangeText={setTime}
+                                                        />
+                                                        <TextInput
+                                                            style={styles.input}
+                                                            placeholder="Message"
+                                                            value={message}
+                                                            onChangeText={setMessage}
+                                                        />
+
+                                                        {/* Send Request Button */}
+                                                        <Pressable style={styles.sendButton} onPress={handleSendRequest}>
+                                                            <Text style={styles.sendButtonText}>Send Request</Text>
+                                                        </Pressable>
                                                     </View>
-                                                </Modal>
+                                                </View>
+                                            </Modal>
 
-                                                {/* Request Sent Modal */}
-                                                <Modal visible={confirmModalVisible} animationType="fade" transparent={true}>
-                                                    <View style={styles.modalOverlay}>
-                                                        <View style={styles.confirmModal}>
-                                                            <TouchableOpacity
-                                                                style={styles.closeButton}
-                                                                onPress={() => setConfirmModalVisible(false)}
-                                                            >
-                                                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
-                                                            </TouchableOpacity>
-                                                            <Text style={{ fontSize: 16 }}>Request sent...</Text>
-                                                        </View>
+                                            {/* Request Sent Modal */}
+                                            <Modal visible={confirmModalVisible} animationType="fade" transparent={true}>
+                                                <View style={styles.modalOverlay}>
+                                                    <View style={styles.confirmModal}>
+                                                        <TouchableOpacity
+                                                            style={styles.closeButton}
+                                                            onPress={() => setConfirmModalVisible(false)}
+                                                        >
+                                                            <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
+                                                        </TouchableOpacity>
+                                                        <Text style={{ fontSize: 16 }}>Request sent...</Text>
                                                     </View>
-                                                </Modal>
+                                                </View>
+                                            </Modal>
 
-                                            </View>
-                                        </Pressable>
-                                    );
-                                })}
-                            </View>
-                        </ScrollView>
+                                        </View>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    </ScrollView>
 
-                    </View>
+                </View>
 
-                )}
+            )}
 
-            </View>
-        </>
+        </View>
 
 
     );
@@ -284,7 +283,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 25,
         alignItems: 'center',
-        paddingBottom: 350, 
+        paddingBottom: 350,
         backgroundColor: 'rgba(237, 238, 239, 1)', // matches .background-*
     },
     studentImage: {
