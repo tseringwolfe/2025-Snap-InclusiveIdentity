@@ -23,7 +23,7 @@ export default function SchoolScreen({ }) {
     const [currentUser, setCurrentUser] = useState({});
     const [selectedTab, setSelectedTab] = useState("Groups");
     const [addedIds, setAddedIds] = useState([]); // array of IDs for added students
-
+    const [trayVisible, setTrayVisible] = useState(false);
     const [meetModalVisible, setMeetModalVisible] = useState(false);
     const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
@@ -34,6 +34,19 @@ export default function SchoolScreen({ }) {
 
     const handleMeetPress = () => {
         setMeetModalVisible(true);
+    };
+
+    const handleSignOut = async () => {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+        console.error("Error signing out:", error.message);
+        } else {
+        // Handle successful sign out (e.g., redirect to login screen)
+        }
+    } catch (error) {
+        console.error("Unexpected error:", error);
+    }
     };
 
     const handleSendRequest = () => {
@@ -48,7 +61,6 @@ export default function SchoolScreen({ }) {
         );
     };
 
-    // Fetch data and set students/currentUser
     const fetchData = async () => {
         try {
             const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -106,6 +118,11 @@ export default function SchoolScreen({ }) {
             <View style={styles.backButton}>
                 <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
             </View>
+            <View style={styles.trayButton}>
+                <Pressable onPress={() => setTrayVisible(true)} >
+                    <Text style={styles.trayButtonText}>...</Text>
+                </Pressable>
+            </View>
 
 
             <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
@@ -149,12 +166,12 @@ export default function SchoolScreen({ }) {
 
             ) : (
 
+
                 //connect tab
                 <View style={{ flex: 1, }}>
                     <Text style={styles.connectionsHeader}>Connections for you</Text>
 
-
-                    <ScrollView contentContainerStyle={styles.container}>
+ <ScrollView contentContainerStyle={styles.container}>
                         <View style={styles.grid}>
                             {sortedStudents.map(student => {
                                 const isAdded = addedIds.includes(student.id);
@@ -177,7 +194,7 @@ export default function SchoolScreen({ }) {
                                             ))}
                                         </View>
 
-                                        {/* add and meet buttons */}
+                                            {/* add and meet buttons */}
 
                                         <View style={styles.buttonRow}>
                                             <Pressable
@@ -259,8 +276,7 @@ export default function SchoolScreen({ }) {
                                                         >
                                                             <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
                                                         </TouchableOpacity>
-                                                        <Text style={{ fontSize: 16, fontFamily: "Avenir Next", }}>Request sent...</Text>
-                                                        <Text style={{ fontFamily: "Avenir Next", fontSize: 10, color: '#36454F' }}>Waiting for user to accept request.</Text>
+                                                        <Text style={{ fontSize: 16 }}>Request sent...</Text>
                                                     </View>
                                                 </View>
                                             </Modal>
@@ -272,13 +288,37 @@ export default function SchoolScreen({ }) {
                         </View>
                     </ScrollView>
 
-                </View >
+                </View>
 
-            )
-            }
+            )}
 
-        </View >
+            <Modal
+                visible={trayVisible}
+                transparent
+                animationType="slide"
+                onRequestClose={() => setTrayVisible(false)}
+            >
+                <View style={styles.trayOverlay}>
+                    <View style={styles.trayContent}>
+                        <Pressable onPress={() => setTrayVisible(false)}>
+                            <Text style={{ fontSize: 18, color: "#888", textAlign: "right" }}>Close</Text>
+                        </Pressable>
+                        <Text style={{ fontSize: 25, fontWeight: "bold", marginBottom: 16 }}>Settings</Text>
+                        <Pressable onPress={() => { navigation.navigate('Identity') }}>
+                            <Text style={{ fontSize: 16, marginBottom: 12 }}>Edit Identity</Text>
+                        </Pressable>
+                        <Pressable onPress={() => { navigation.navigate('Interests') }}>
+                            <Text style={{ fontSize: 16, marginBottom: 12 }}>Edit Interests</Text>
+                        </Pressable>
+                        <Pressable onPress={() => { handleSignOut() }}>
+                            <Text style={{ fontSize: 16, marginBottom: 12, }}>Sign Out</Text>
+                        </Pressable>
+                        {/* Add more options as needed */}
+                    </View>
+                </View>
+            </Modal>
 
+        </View>
 
     );
 }
@@ -501,13 +541,12 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: "#ccc",
-        borderRadius: 15,
-        paddingVertical: 10,
-        paddingHorizontal: 12,
+        borderRadius: 8,
+        padding: 10,
         fontFamily: "Avenir Next",
         fontSize: 14,
         color: "#000",
-        marginBottom: 15,
+        marginBottom: 10,
         backgroundColor: "#fff",
     },
     sendButton: {
@@ -543,5 +582,31 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginTop: 10,
         marginBottom: 5,
+    },
+    trayButton: {
+        position: "absolute",
+        top: 40,
+        zIndex: 10,
+        right: 20,
+        backgroundColor: "#fff",
+        borderRadius: 30,
+        padding: 10,
+        shadowColor: "#000",
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+    },
+    trayOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.3)",
+        justifyContent: "flex-end",
+    },
+    trayContent: {
+        backgroundColor: "#fff",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        padding: 24,
+        minHeight: 180,
+        fontFamily: "Avenir",
     },
 })
