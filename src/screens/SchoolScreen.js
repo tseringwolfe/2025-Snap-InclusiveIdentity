@@ -8,6 +8,7 @@ import {
     StyleSheet,
     Pressable,
     TouchableOpacity,
+    Modal,
 } from "react-native";
 import { Card } from "@rn-vui/base";
 import { useNavigation } from "@react-navigation/native";
@@ -21,6 +22,7 @@ export default function SchoolScreen({ }) {
     const [currentUser, setCurrentUser] = useState({});
     const [selectedTab, setSelectedTab] = useState("Groups");
     const [addedIds, setAddedIds] = useState([]);
+    const [trayVisible, setTrayVisible] = useState(false);
 
     // Fetch data and set students/currentUser
     const fetchData = async () => {
@@ -84,6 +86,11 @@ export default function SchoolScreen({ }) {
 
             <View style={styles.backButton}>
                 <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
+            </View>
+            <View style={styles.trayButton}>
+                <Pressable onPress={() => setTrayVisible(true)} >
+                    <Text style={styles.trayButtonText}>...</Text>
+                </Pressable>
             </View>
 
             <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
@@ -175,6 +182,29 @@ export default function SchoolScreen({ }) {
                 </ScrollView>
 
             )}
+
+            <Modal
+                visible={trayVisible}
+                transparent
+                animationType="slide"
+                onRequestClose={() => setTrayVisible(false)}
+            >
+                <View style={styles.trayOverlay}>
+                    <View style={styles.trayContent}>
+                        <Pressable onPress={() => setTrayVisible(false)}>
+                            <Text style={{ fontSize: 18, color: "#888", textAlign: "right" }}>Close</Text>
+                        </Pressable>
+                        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>Tray Options</Text>
+                        <Pressable onPress={() => { navigation.navigate('Identity') }}>
+                            <Text style={{ fontSize: 16, marginBottom: 12 }}>Edit Identity</Text>
+                        </Pressable>
+                        <Pressable onPress={() => { navigation.navigate('Interests') }}>
+                            <Text style={{ fontSize: 16, marginBottom: 12 }}>Edit Interests</Text>
+                        </Pressable>
+                        {/* Add more options as needed */}
+                    </View>
+                </View>
+            </Modal>
 
         </View>
     );
@@ -328,5 +358,45 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: '#fff',
         textTransform: 'uppercase',
+    },
+    trayButton: {
+        top:40,
+        right: 16,
+        width: 30,
+        zIndex: 10,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 3,
+        position: "absolute",
+    },
+    trayButtonText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '700',
+        fontSize: 10,
+        color: '#000',
+        textTransform: 'uppercase',
+    },
+    trayOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    trayContent: {
+        width: '80%',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        padding: 20,
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+        elevation: 4,
     },
 })
