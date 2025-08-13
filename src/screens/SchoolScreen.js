@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import {
     View,
@@ -12,16 +11,60 @@ import {
 } from "react-native";
 import { Card } from "@rn-vui/base";
 import { useNavigation } from "@react-navigation/native";
-
 import { supabase } from "../utils/hooks/supabase";
 
+let scores = [];
 
 export default function SchoolScreen({ }) {
     const navigation = useNavigation();
     const [students, setStudents] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
     const [selectedTab, setSelectedTab] = useState("Groups");
-    const [addedIds, setAddedIds] = useState([]); // array of IDs for added students
+    const [addedIds, setAddedIds] = useState([]);
+
+    // Fetch data and set students/currentUser
+    const fetchData = async () => {
+        try {
+            const { data: { user }, error: userError } = await supabase.auth.getUser();
+            if (userError) {
+                console.error("Error fetching user: ", userError);
+            }
+            const { data, error } = await supabase.from("students").select("*");
+            if (error) {
+                console.error("Error fetching data:", error);
+            }
+            const currUser = data.filter(student => student.user_id == user.id);
+            setCurrentUser(currUser[0]);
+            const filteredStudents = data.filter(student => student.user_id !== user.id);
+            setStudents(filteredStudents);
+        } catch (error) {
+            console.error("Unexpected error:", error);
+        }
+    };
+
+    // Calculate interest scores and sort students
+    const getSortedStudentsWithScores = () => {
+        if (!currentUser.interests || students.length === 0) return [];
+        return students
+            .map(student => {
+                const commonInterests = (student.interests || []).filter(interest =>
+                    currentUser.interests.includes(interest)
+                );
+                return {
+                    ...student,
+                    interestScore: commonInterests.length,
+                    commonInterests,
+                };
+            })
+            .sort((a, b) => b.interestScore - a.interestScore);
+    };
+
+    // Helper to get 4 random common interests
+    const getRandomCommonInterests = (commonInterests) => {
+        if (!commonInterests || commonInterests.length === 0) return [];
+        const shuffled = [...commonInterests].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 4);
+    };
 
     const handleAdd = (id) => {
         setAddedIds((prev) =>
@@ -29,157 +72,118 @@ export default function SchoolScreen({ }) {
         );
     };
 
-    const fetchData = async () => {
-        try {
-            //get current user
-            const { data: { user }, error: userError } = await supabase.auth.getUser();
-            if (userError) {
-                console.error("Error fetching user: ", userError);
-            }
-
-            //fetch all students
-            const { data, error } = await supabase.from("students").select("*");
-            if (error) {
-                console.error("Error fetching data:", error);
-            }
-            const currUser = data.filter(student => student.user_id == user.id);
-            setCurrentUser(currUser[0]);
-
-            //filter out curr user
-            const filteredStudents = data.filter(student => student.user_id !== user.id);
-
-            setStudents(filteredStudents);
-
-        } catch (error) {
-            console.error("Unexpected error:", error);
-        }
-    };
-
     useEffect(() => {
         fetchData();
     }, []);
 
+    const sortedStudents = getSortedStudentsWithScores();
+    console.log("Sorted Students:", sortedStudents);
     return (
-        <>
-            <View style={{ flex: 1, position: "relative" }}>
-                {/* back button */}
+        <View style={{ flex: 1, position: "relative" }}>
+            {/* back button */}
 
-                <View style={styles.backButton}>
-
-                    <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
-                </View>
-
-                <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
-
-                    {/* School Photo */}
-                    <Image
-                        source={{ uri: "https://avatars.githubusercontent.com/u/85767261?s=200&v=4" }}
-                        style={styles.schoolImage}
-                    />
-                    <Text>Snap Academies</Text>
-
-                    {/* user info */}
-                    <Text>{currentUser.name} - {currentUser.pronouns} | Class of {currentUser.graduation_year}</Text>
-
-                </View>
-
-                {/* groups/connect tabs */}
-                <View style={styles.tabContainer}>
-                    <View style={styles.tabRow}>
-                        {["Groups", "Connect"].map((tab) => {
-                            return (
-                                <TouchableOpacity
-                                    key={tab}
-                                    onPress={() => setSelectedTab(tab)}
-                                    style={styles.tabButton}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.tabText,
-                                            selectedTab === tab && styles.activeTabText,
-                                        ]}
-                                    >
-                                        {tab}
-                                    </Text>
-                                    {selectedTab === tab && <View style={styles.activeTabLine} />}
-                                </TouchableOpacity>
-                            )
-                        }
-                        )}
-                    </View>
-                </View>
-
-                {/* navigation for groups and connect */}
-                {selectedTab === "Groups" ? (
-
-                    // groups tab
-                    <View style={{ alignItems: "center", paddingTop: 75 }}>
-                        <Text>COMING SOON!</Text>
-
-                    </View>
-                ) : (
-
-                    //connect tab
-
-                    <ScrollView contentContainerStyle={styles.container}>
-                        <View style={styles.grid}>
-                            {students.map(student => {
-                                const isAdded = addedIds.includes(student.id);
-                                return (
-                                    <Pressable
-                                        key={student.user_id}
-                                        onPress={() => navigation.navigate("Connect", {})}
-                                        style={styles.card}
-                                    >
-                                        <Image source={{ uri: student.img_url }} style={styles.studentImage} />
-                                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
-                                        <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
-
-                                        {/* add and meet buttons */}
-
-
-                                        <View style={styles.buttonRow}>
-                                            <Pressable
-                                                style={[
-                                                    styles.addButton,
-                                                    isAdded && styles.addedButton
-                                                ]}
-                                                onPress={() => handleAdd(student.id)}
-                                            >
-                                                <Text style={[
-                                                    styles.addButtonText,
-                                                    isAdded && styles.addedButtonText
-                                                ]}>
-                                                    {isAdded ? "Added✓" : "Add+"}
-                                                </Text>
-                                            </Pressable>
-
-                                            <Pressable
-                                                style={styles.meetButton}
-                                            // onPress={}
-                                            >
-                                                <Text style={styles.meetButtonText}>Meet</Text>
-                                            </Pressable>
-                                        </View>
-                                    </Pressable>
-                                );
-                            })}
-                        </View>
-                    </ScrollView>
-
-                )}
-
+            <View style={styles.backButton}>
+                <Button style={{ position: "absolute", top: 10, left: 10 }} onPress={() => navigation.goBack()} title="×" />
             </View>
-        </>
-    );
 
+            <View style={{ paddingTop: 50, paddingBottom: 25, alignItems: "center" }}>
+                {/* School Photo */}
+                <Image
+                    source={{ uri: "https://avatars.githubusercontent.com/u/85767261?s=200&v=4" }}
+                    style={styles.schoolImage}/>
+                <Text>Snap Academies</Text>
+                {/* user info */}
+                <Text>{currentUser.name} - {currentUser.pronouns} | Class of {currentUser.graduation_year}</Text>
+            </View>
+
+            {/* groups/connect tabs */}
+            <View style={styles.tabContainer}>
+                <View style={styles.tabRow}>
+                    {["Groups", "Connect"].map((tab) => (
+                        <TouchableOpacity
+                            key={tab}
+                            onPress={() => setSelectedTab(tab)}
+                            style={styles.tabButton}>
+                            <Text
+                                style={[
+                                    styles.tabText,
+                                    selectedTab === tab && styles.activeTabText,
+                                ]} > {tab}
+                            </Text>
+                            {selectedTab === tab && <View style={styles.activeTabLine} />}
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            </View>
+
+            {/* navigation for groups and connect */}
+            {selectedTab === "Groups" ? (
+
+                // groups tab
+                <View style={{ alignItems: "center", paddingTop: 75 }}>
+                    <Image source={{ uri: "https://i.postimg.cc/FKCMdj4k/coming-soon.png" }} style={{ width: 350, height: 250 }} />
+                </View>
+            ) : (
+
+                //connect tab
+
+                <ScrollView contentContainerStyle={styles.container}>
+                    <View style={styles.grid}>
+                        {sortedStudents.map(student => {
+                            const isAdded = addedIds.includes(student.id);
+                            const randomCommon = getRandomCommonInterests(student.commonInterests);
+                            return (
+                                <Pressable
+                                    key={student.user_id}
+                                    onPress={() => navigation.navigate("Connect", {})}
+                                    style={styles.card}
+                                >
+                                    <Image source={{ uri: student.img_url }} style={styles.studentImage} />
+                                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>{student.name}</Text>
+                                    <Text style={{ justifyContent: "center", textAlign: "center", fontSize: 11 }}>{student.pronouns}</Text>
+                                    {/* Show 4 random common interests */}
+                                    <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginVertical: 6 }}>
+                                        {randomCommon.map((interest, idx) => (
+                                            <View key={idx} style={{ backgroundColor: "#FFD600", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2, margin: 2 }}>
+                                                <Text style={{ fontSize: 10, fontFamily: "Avenir" }}>{interest}</Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                    <View style={styles.buttonRow}>
+                                        <Pressable
+                                            style={[
+                                                styles.addButton,
+                                                isAdded && styles.addedButton
+                                            ]}
+                                            onPress={() => handleAdd(student.id)}
+                                        >
+                                            <Text style={[
+                                                styles.addButtonText,
+                                                isAdded && styles.addedButtonText
+                                            ]}>
+                                                {isAdded ? "Added✓" : "Add+"}
+                                            </Text>
+                                        </Pressable>
+                                        <Pressable style={styles.meetButton}>
+                                            <Text style={styles.meetButtonText}>Meet</Text>
+                                        </Pressable>
+                                    </View>
+                                </Pressable>
+                            );
+                        })}
+                    </View>
+                </ScrollView>
+
+            )}
+
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingTop: 25,
-        alignItems: 'center',
+        paddingBottom: 350, 
         backgroundColor: 'rgba(237, 238, 239, 1)', // matches .background-*
     },
     studentImage: {
