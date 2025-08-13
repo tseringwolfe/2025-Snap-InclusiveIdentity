@@ -14,6 +14,7 @@ import {
 import { Card } from "@rn-vui/base";
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../utils/hooks/supabase";
+import StoriesScreen from "./StoriesScreen";
 
 let scores = [];
 
@@ -257,7 +258,8 @@ export default function SchoolScreen({ }) {
                                                         >
                                                             <Text style={{ fontSize: 18, fontWeight: "bold" }}>×</Text>
                                                         </TouchableOpacity>
-                                                        <Text style={{ fontSize: 16 }}>Request sent...</Text>
+                                                        <Text style={{ fontSize: 16, fontFamily: "Avenir Next", }}>Request sent...</Text>
+                                                        <Text style={{ fontFamily: "Avenir Next", fontSize: 10, color: '#36454F' }}>Waiting for user to accept request.</Text>
                                                     </View>
                                                 </View>
                                             </Modal>
@@ -269,11 +271,12 @@ export default function SchoolScreen({ }) {
                         </View>
                     </ScrollView>
 
-                </View>
+                </View >
 
-            )}
+            )
+            }
 
-        </View>
+        </View >
 
 
     );
@@ -445,16 +448,23 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         backgroundColor: "white",
-        borderRadius: 10,
-        padding: 20,
-        width: "85%",
-        position: "relative",
+        borderRadius: 20,
+        paddingVertical: 25,
+        paddingHorizontal: 20,
+        width: "90%",
+        alignItems: "stretch",
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 5,
     },
     modalTitle: {
+        fontFamily: "Avenir Next",
+        fontWeight: "700",
         fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 15,
+        color: "#000",
         textAlign: "center",
+        marginBottom: 15,
     },
     closeButton: {
         position: "absolute",
@@ -465,20 +475,31 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: "#ccc",
-        borderRadius: 8,
-        padding: 10,
-        marginBottom: 10,
+        borderRadius: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        fontFamily: "Avenir Next",
+        fontSize: 14,
+        color: "#000",
+        marginBottom: 15,
+        backgroundColor: "#fff",
     },
     sendButton: {
-        backgroundColor: "#007bff",
-        paddingVertical: 10,
-        borderRadius: 8,
-        marginTop: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#00B6FF",
+        paddingVertical: 12,
+        borderRadius: 25,
+        marginTop: 5,
     },
+
     sendButtonText: {
-        color: "white",
-        textAlign: "center",
+        fontFamily: "Avenir Next",
         fontWeight: "600",
+        fontSize: 14,
+        color: "#fff",
+        marginLeft: 8,
     },
     confirmModal: {
         backgroundColor: "white",
