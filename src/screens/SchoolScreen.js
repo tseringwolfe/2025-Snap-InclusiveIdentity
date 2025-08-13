@@ -91,12 +91,6 @@ export default function SchoolScreen({ }) {
         return shuffled.slice(0, 4);
     };
 
-    const handleAdd = (id) => {
-        setAddedIds((prev) =>
-            prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-        );
-    };
-
     useEffect(() => {
         fetchData();
     }, []);
