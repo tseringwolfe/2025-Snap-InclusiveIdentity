@@ -148,7 +148,7 @@ export default function SchoolScreen({ }) {
             ) : (
 
                 //connect tab
-                <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 1)', }}>
+                <View style={{ flex: 1, }}>
                     <Text style={styles.connectionsHeader}>Connections for you</Text>
 
 
