@@ -14,7 +14,6 @@ import {
 import { Card } from "@rn-vui/base";
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../utils/hooks/supabase";
-import StoriesScreen from "./StoriesScreen";
 
 let scores = [];
 
@@ -131,9 +130,10 @@ export default function SchoolScreen({ }) {
                 <Image
                     source={{ uri: "https://avatars.githubusercontent.com/u/85767261?s=200&v=4" }}
                     style={styles.schoolImage} />
-                <Text>Snap Academies</Text>
+                <Text style={styles.schoolText}>Snap Academies</Text>
                 {/* user info */}
                 <Text>{currentUser.name} - {currentUser.pronouns} | Class of {currentUser.graduation_year}</Text>
+                <Text style={styles.disclaimerText}>Communities and Community Group Chats are unofficial and are not affiliate with or managed by schools. Snap doesn’t verify if Community members are students of the school. </Text>
             </View>
 
             {/* groups/connect tabs */}
@@ -159,13 +159,13 @@ export default function SchoolScreen({ }) {
             {/* navigation for groups and connect */}
             {selectedTab === "Groups" ? (
 
-                    // groups tab
-                    <View style={{ alignItems: "center" }}>
-                        <Image source={require("../../assets/snapchat/groups.png")}
-                            style={{ width: 700, height: 700, resizeMode: "contain" }} />
+                // groups tab
+                <View style={styles.groupsContainer}>
+                    <Image source={{ uri: "https://i.postimg.cc/FKCMdj4k/coming-soon.png" }} style={{ width: 350, height: 250 }} />
+                </View>
 
-                    </View>
-                ) : (
+            ) : (
+
 
                 //connect tab
                 <View style={{ flex: 1, }}>
@@ -350,6 +350,25 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 150 / 2,
     },
+    schoolText: {
+        fontFamily: 'Avenir Next',
+        fontWeight: '600',
+        fontSize: 24,
+        paddingBottom: 6,
+    },
+    userText: {
+        fontFamily: 'Avenir Next',
+        fontSize: 16,
+    },
+    disclaimerText: {
+        fontFamily: 'Avenir Next',
+        fontSize: 12,
+        color: '#3e3e3eff',
+        textAlign: 'center',
+        paddingTop: 20,
+        paddingLeft: 40,
+        paddingRight: 40,
+    },
     tabContainer: {
         backgroundColor: "#ffffffff",
         paddingTop: 16,
@@ -442,6 +461,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginTop: 8,
         gap: 6,
+    },
+    groupsContainer: {
+        backgroundColor: '#fffc00',
+        alignItems: "center",
+        paddingTop: 115,
+        height: 700,
     },
     addButton: {
         flex: 1,
