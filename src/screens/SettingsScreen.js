@@ -38,7 +38,7 @@ export default function SettingsScreen() {
       setDateOfBirth(data.birthday || "01/01/1998");
       setProfilePictureUrl(
         data.avatar_url ||
-        "https://postimg.cc/9rDHcRX9",
+        "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-snapchat-2019-square2-512.png",
       ); // Default URL
       setInitialDisplayName(data.username || user.email.split("@")[0]);
       setInitialEmail(data.email || user.email);
